@@ -44,14 +44,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
   return (
     <header
-      className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-white/95 dark:bg-hydroera-slate-dark/95 backdrop-blur-md shadow-sm'
           : isTransparent
             ? 'bg-transparent'
             : 'bg-white dark:bg-hydroera-slate-dark'
       }`}
-      style={{ top: 'var(--admin-bar-height, 0px)' }}
       {...(theme ? { 'data-theme': theme } : {})}
     >
       <div className="container">
