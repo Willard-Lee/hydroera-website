@@ -1,14 +1,19 @@
-import clsx from 'clsx'
-import React from 'react'
+import { cn } from '@/utilities/ui'
 
 interface Props {
   className?: string
   loading?: 'lazy' | 'eager'
   priority?: 'auto' | 'high' | 'low'
+  variant?: 'light' | 'dark'
 }
 
 export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
+  const {
+    loading: loadingFromProps,
+    priority: priorityFromProps,
+    className,
+    variant = 'dark',
+  } = props
 
   const loading = loadingFromProps || 'lazy'
   const priority = priorityFromProps || 'low'
@@ -16,14 +21,18 @@ export const Logo = (props: Props) => {
   return (
     /* eslint-disable @next/next/no-img-element */
     <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
+      alt="HydroEra Logo"
+      width={150}
+      height={66}
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
+      className={cn(
+        'w-auto h-9',
+        variant === 'light' && 'brightness-0 invert',
+        className,
+      )}
+      src="/media/hydroera-logo.png"
     />
   )
 }

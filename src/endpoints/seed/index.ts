@@ -44,20 +44,26 @@ export const seed = async ({
   payload.logger.info(`— Clearing collections and globals...`)
 
   // clear the database
-  await Promise.all(
-    globals.map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
-    ),
-  )
+  await payload.updateGlobal({
+    slug: 'header',
+    data: {
+      navItems: [],
+      cta: { label: 'Get a Quote', link: { type: 'custom', url: '/contact' } },
+    },
+    depth: 0,
+    context: { disableRevalidate: true },
+  })
+
+  await payload.updateGlobal({
+    slug: 'footer',
+    data: {
+      columns: [],
+      socialLinks: [],
+      legalLinks: [],
+    },
+    depth: 0,
+    context: { disableRevalidate: true },
+  })
 
   await Promise.all(
     collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
@@ -225,6 +231,13 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
+              label: 'About',
+              url: '/about',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
               label: 'Posts',
               url: '/posts',
             },
@@ -240,35 +253,54 @@ export const seed = async ({
             },
           },
         ],
+        cta: {
+          label: 'Get a Quote',
+          link: {
+            type: 'reference',
+            reference: {
+              relationTo: 'pages',
+              value: contactPage.id,
+            },
+          },
+        },
       },
     }),
     payload.updateGlobal({
       slug: 'footer',
       data: {
-        navItems: [
+        description: 'Leading pump solutions provider in Southeast Asia with certified technical authority.',
+        columns: [
           {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
+            title: 'Company',
+            links: [
+              { link: { type: 'custom', label: 'About Us', url: '/about' } },
+              { link: { type: 'custom', label: 'Projects', url: '/projects' } },
+              { link: { type: 'custom', label: 'Careers', url: '/careers' } },
+            ],
           },
           {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
+            title: 'Resources',
+            links: [
+              { link: { type: 'custom', label: 'Blog', url: '/posts' } },
+              {
+                link: {
+                  type: 'reference',
+                  label: 'Contact',
+                  reference: { relationTo: 'pages', value: contactPage.id },
+                },
+              },
+              { link: { type: 'custom', label: 'Admin', url: '/admin' } },
+            ],
           },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
-            },
-          },
+        ],
+        contact: {
+          phone: '+60 12-345 6789',
+          email: 'info@hydroera.com',
+          address: 'Kuala Lumpur, Malaysia',
+        },
+        copyrightText: 'HydroEra Sdn Bhd. All rights reserved.',
+        legalLinks: [
+          { link: { type: 'custom', label: 'Privacy Policy', url: '/privacy' } },
         ],
       },
     }),
