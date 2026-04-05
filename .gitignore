@@ -9,7 +9,6 @@ next-env.d.ts
 
 # Payload default media upload directory
 public/media/
-
 public/robots.txt
 public/sitemap*.xml
 
@@ -20,7 +19,3 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-
-# Agents
-AGENTS.md
-CLAUDE.md

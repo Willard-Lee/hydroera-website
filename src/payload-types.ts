@@ -72,6 +72,8 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    products: Product;
+    projects: Project;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -94,6 +96,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -228,6 +232,8 @@ export interface Post {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
+  excerpt?: string | null;
+  readTime?: number | null;
   content: {
     root: {
       type: string;
@@ -244,7 +250,9 @@ export interface Post {
     [k: string]: unknown;
   };
   relatedPosts?: (number | Post)[] | null;
+  relatedProducts?: (number | null) | Product;
   categories?: (number | Category)[] | null;
+  tags?: string[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -253,6 +261,11 @@ export interface Post {
     image?: (number | null) | Media;
     description?: string | null;
   };
+  postType?: ('article' | 'guide') | null;
+  /**
+   * Pin this post to featured section on the homepage
+   */
+  featured?: boolean | null;
   publishedAt?: string | null;
   authors?: (number | User)[] | null;
   populatedAuthors?:
@@ -388,6 +401,76 @@ export interface FolderInterface {
   folderType?: 'media'[] | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  title: string;
+  /**
+   * Main Product image shown on the listing card and detail page.
+   */
+  featuredImage: number | Media;
+  /**
+   * A brief summary for cards and search results.
+   */
+  shortDescription?: string | null;
+  /**
+   * Additional Product Photos shown as thumbnails on the detail page
+   */
+  gallery?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  specifications?: {
+    material?: string | null;
+    dimensions?: string | null;
+  };
+  /**
+   * Manually select related products or leave empty to auto-populate by category via frontend logic.
+   */
+  relatedProducts?: (number | Product)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Select the product category
+   */
+  category: number | Category;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -783,6 +866,127 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  /**
+   * Project name e.g. "Batu Kawan Industrial Water Treatment System"
+   */
+  title: string;
+  /**
+   * Main image shown on the project card and detail page.
+   */
+  featuredImage: number | Media;
+  /**
+   * Additional project photos. Shown as a grid on the detail page.
+   */
+  gallery?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Brief summary shown on project cards. Keep under 160 characters.
+   */
+  summary: string;
+  challenge?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  solution?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  client?: string | null;
+  projectValue?: string | null;
+  duration?: string | null;
+  teamSize?: number | null;
+  /**
+   * Add one row per deliverable or work item.
+   */
+  scope?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Link the pump products installed in this project.
+   */
+  productsUsed?: (number | Product)[] | null;
+  /**
+   * Add one row per measurable result.
+   */
+  outcomes?:
+    | {
+        metric: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional quote from the client about this project.
+   */
+  testimonial?: {
+    quote?: string | null;
+    authorName?: string | null;
+    authorRole?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Used to filter projects on the listing page.
+   */
+  sector: 'manufacturing' | 'municipal' | 'commercial' | 'industrial' | 'agricultural';
+  status: 'completed' | 'in-progress' | 'upcoming';
+  location: string;
+  completionYear?: number | null;
+  /**
+   * Pin this project to the featured strip on the projects page.
+   */
+  featured?: boolean | null;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -992,6 +1196,14 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1195,9 +1407,13 @@ export interface FormBlockSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
+  excerpt?: T;
+  readTime?: T;
   content?: T;
   relatedPosts?: T;
+  relatedProducts?: T;
   categories?: T;
+  tags?: T;
   meta?:
     | T
     | {
@@ -1205,6 +1421,8 @@ export interface PostsSelect<T extends boolean = true> {
         image?: T;
         description?: T;
       };
+  postType?: T;
+  featured?: T;
   publishedAt?: T;
   authors?: T;
   populatedAuthors?:
@@ -1355,6 +1573,104 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  title?: T;
+  featuredImage?: T;
+  shortDescription?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  description?: T;
+  specifications?:
+    | T
+    | {
+        material?: T;
+        dimensions?: T;
+      };
+  relatedProducts?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  category?: T;
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  featuredImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  summary?: T;
+  challenge?: T;
+  solution?: T;
+  client?: T;
+  projectValue?: T;
+  duration?: T;
+  teamSize?: T;
+  scope?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  productsUsed?: T;
+  outcomes?:
+    | T
+    | {
+        metric?: T;
+        id?: T;
+      };
+  testimonial?:
+    | T
+    | {
+        quote?: T;
+        authorName?: T;
+        authorRole?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  sector?: T;
+  status?: T;
+  location?: T;
+  completionYear?: T;
+  featured?: T;
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1884,6 +2200,14 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null)
+      | ({
+          relationTo: 'projects';
+          value: number | Project;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

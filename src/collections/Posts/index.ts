@@ -74,14 +74,23 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       type: 'tabs',
       tabs: [
+        // Tab 1 : HERO (Name, Content, excerpt, readtime)
         {
           fields: [
-            {
+            { // Hero Image
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
             },
-            {
+            { // Short summary for cards
+              name: 'excerpt',
+              type: 'textarea',
+            },
+            { // Estimate reading minutes
+              name: 'readTime',
+              type: 'number',
+            },
+            { // Blocks: Banner, code, media block, call to action
               name: 'content',
               type: 'richText',
               editor: lexicalEditor({
@@ -99,12 +108,13 @@ export const Posts: CollectionConfig<'posts'> = {
               label: false,
               required: true,
             },
+
           ],
           label: 'Content',
         },
-        {
+        { // 2nd Tab: Meta 
           fields: [
-            {
+            { //relationTO: posts, 
               name: 'relatedPosts',
               type: 'relationship',
               admin: {
@@ -120,7 +130,15 @@ export const Posts: CollectionConfig<'posts'> = {
               hasMany: true,
               relationTo: 'posts',
             },
-            {
+            { //Related Products
+              name: 'relatedProducts',
+              type: 'relationship',
+              admin: {
+                position: 'sidebar',
+              },
+              relationTo: 'products',
+            },
+            { // Categories
               name: 'categories',
               type: 'relationship',
               admin: {
@@ -129,10 +147,15 @@ export const Posts: CollectionConfig<'posts'> = {
               hasMany: true,
               relationTo: 'categories',
             },
+            { // Tags
+              name: 'tags',
+              type: 'text',
+              hasMany: true,
+            },
           ],
           label: 'Meta',
         },
-        {
+        { // SEO
           name: 'meta',
           label: 'SEO',
           fields: [
@@ -161,7 +184,29 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    {
+    // SIDEBAR
+    { // PostType : Article, Guide, Projec etc
+      name: 'postType',
+      type: 'select', // When using a select type you must include options in field to select.
+      admin: {
+        position: 'sidebar',
+      },
+      options: [
+        {label: 'Article', value: 'article'}, // Add more postType here 
+        {label: 'Guide', value: 'guide'}, // You can createa a relation for this making it accessible to other
+      ]
+    },
+    { // Featured Post 
+      name: 'featured',
+      type: 'checkbox',
+      label: 'Featured Post',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Pin this post to featured section on the homepage' 
+      }
+    },
+    { // Published At 
       name: 'publishedAt',
       type: 'date',
       admin: {
@@ -181,7 +226,7 @@ export const Posts: CollectionConfig<'posts'> = {
         ],
       },
     },
-    {
+    { // Author
       name: 'authors',
       type: 'relationship',
       admin: {
@@ -193,7 +238,7 @@ export const Posts: CollectionConfig<'posts'> = {
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
     // GraphQL will also not return mutated user data that differs from the underlying schema
-    {
+    { // Populate Authors
       name: 'populatedAuthors',
       type: 'array',
       access: {
