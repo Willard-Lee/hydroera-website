@@ -11,6 +11,8 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Products } from './collections/Products'
 import { Projects } from './collections/Projects'
+import { Careers } from '@/collections/Careers'
+import { Testimonials } from './collections/Testimonials'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -64,7 +66,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Products, Projects],
+  collections: [Pages, Posts, Media, Categories, Users, Products, Projects, Careers, Testimonials],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,

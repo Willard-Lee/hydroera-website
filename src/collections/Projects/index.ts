@@ -45,7 +45,7 @@ export const Projects: CollectionConfig<'projects'> = {
     title: true,
     slug: true,
     sector: true,
-    status: true,
+    projectStatus: true,
     location: true,
     completionYear: true,
     featuredImage: true,
@@ -62,7 +62,7 @@ export const Projects: CollectionConfig<'projects'> = {
     // Field used as the document title in the admin list table
     useAsTitle: 'title',
     // Columns shown in the admin list view by default
-    defaultColumns: ['title', 'sector', 'status', 'location', 'completionYear', 'updatedAt'],
+    defaultColumns: ['title', 'sector', 'projectStatus', 'location', 'completionYear', 'updatedAt'],
     // Live preview — opens the frontend page alongside the admin editor
     livePreview: {
       url: ({ data, req }) =>
@@ -400,9 +400,11 @@ export const Projects: CollectionConfig<'projects'> = {
       ],
     },
     {
-      // Current state of the project — shown as a badge on cards and detail page
-      name: 'status',
+      // Delivery / lifecycle state — shown as a badge on cards and detail page.
+      // Named projectStatus (not "status") so Postgres enum does not collide with Payload draft _status.
+      name: 'projectStatus',
       type: 'select',
+      label: 'Project status',
       required: true,
       defaultValue: 'completed',
       admin: {

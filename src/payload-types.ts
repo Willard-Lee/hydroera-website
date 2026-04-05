@@ -74,6 +74,8 @@ export interface Config {
     users: User;
     products: Product;
     projects: Project;
+    careers: Career;
+    testimonials: Testimonial;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -98,6 +100,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    careers: CareersSelect<false> | CareersSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -968,13 +972,173 @@ export interface Project {
    * Used to filter projects on the listing page.
    */
   sector: 'manufacturing' | 'municipal' | 'commercial' | 'industrial' | 'agricultural';
-  status: 'completed' | 'in-progress' | 'upcoming';
+  projectStatus: 'completed' | 'in-progress' | 'upcoming';
   location: string;
   completionYear?: number | null;
   /**
    * Pin this project to the featured strip on the projects page.
    */
   featured?: boolean | null;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Manage job listings shown on the Careers page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "careers".
+ */
+export interface Career {
+  id: number;
+  /**
+   * Job title e.g. "Senior Water Treatment Engineer"
+   */
+  title: string;
+  /**
+   * Brief summary shown on job cards. Keep under 200 characters.
+   */
+  excerpt: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Add one row per responsibility.
+   */
+  responsibilities?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Must-have qualifications. Add one row per requirement.
+   */
+  requirements?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Preferred but not required. Add one row per item.
+   */
+  niceToHave?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Leave empty to show "Competitive salary" on the listing.
+   */
+  salaryRange?: string | null;
+  /**
+   * Add one row per benefit offered.
+   */
+  benefits?:
+    | {
+        benefit: string;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  /**
+   * Used to group roles on the careers page.
+   */
+  department: 'engineering' | 'sales' | 'service' | 'operations' | 'rd' | 'qa' | 'administration';
+  location: string;
+  employmentType: 'full-time' | 'part-time' | 'contract' | 'internship';
+  experienceLevel?: string | null;
+  /**
+   * Uncheck when the position has been filled. The listing will be hidden from the website.
+   */
+  isOpen?: boolean | null;
+  /**
+   * Pin this role to the top of the careers page.
+   */
+  featured?: boolean | null;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  /**
+   * The testimonial quote from the client.
+   */
+  quote: string;
+  authorName: string;
+  authorRole?: string | null;
+  company?: string | null;
+  /**
+   * Optional logo shown alongside the testimonial.
+   */
+  companyLogo?: (number | null) | Media;
+  /**
+   * Optional star rating.
+   */
+  rating?: number | null;
+  /**
+   * Upload the official completion letter from the client.
+   */
+  completionLetter?: {
+    /**
+     * Upload the surat penyelesaian projek as a PDF.
+     */
+    file?: (number | null) | Media;
+    /**
+     * Name shown on the download button. Auto-uses company name if left empty.
+     */
+    label?: string | null;
+    /**
+     * If unchecked, the letter is saved for records but not shown publicly.
+     */
+    isPublic?: boolean | null;
+  };
+  /**
+   * Show this testimonial on the homepage and featured sections.
+   */
+  featured?: boolean | null;
+  /**
+   * Link this testimonial to the project it came from.
+   */
+  relatedProject?: (number | null) | Project;
   publishedAt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -1202,6 +1366,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'careers';
+        value: number | Career;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1661,10 +1833,90 @@ export interface ProjectsSelect<T extends boolean = true> {
         description?: T;
       };
   sector?: T;
-  status?: T;
+  projectStatus?: T;
   location?: T;
   completionYear?: T;
   featured?: T;
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "careers_select".
+ */
+export interface CareersSelect<T extends boolean = true> {
+  title?: T;
+  excerpt?: T;
+  description?: T;
+  responsibilities?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  requirements?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  niceToHave?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  salaryRange?: T;
+  benefits?:
+    | T
+    | {
+        benefit?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  department?: T;
+  location?: T;
+  employmentType?: T;
+  experienceLevel?: T;
+  isOpen?: T;
+  featured?: T;
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  quote?: T;
+  authorName?: T;
+  authorRole?: T;
+  company?: T;
+  companyLogo?: T;
+  rating?: T;
+  completionLetter?:
+    | T
+    | {
+        file?: T;
+        label?: T;
+        isPublic?: T;
+      };
+  featured?: T;
+  relatedProject?: T;
   publishedAt?: T;
   generateSlug?: T;
   slug?: T;
@@ -2208,6 +2460,14 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'projects';
           value: number | Project;
+        } | null)
+      | ({
+          relationTo: 'careers';
+          value: number | Career;
+        } | null)
+      | ({
+          relationTo: 'testimonials';
+          value: number | Testimonial;
         } | null);
     global?: string | null;
     user?: (number | null) | User;
