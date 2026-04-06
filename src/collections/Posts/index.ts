@@ -261,12 +261,12 @@ export const Posts: CollectionConfig<'posts'> = {
     },
     slugField(),
   ],
-  hooks: {
+  hooks: { // HOOKS
     afterChange: [revalidatePost],
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
   },
-  versions: {
+  versions: { // VERSION CONTROL
     drafts: {
       autosave: {
         interval: 100, // We set this interval for optimal live preview

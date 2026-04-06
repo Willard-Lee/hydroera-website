@@ -10,6 +10,12 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { ServicesGridBlock } from './ServicesGrid/Component'
 import { StatsCounterBlock } from './StatsCounter/Component'
 import { TestimonialsBlock } from './Testimonials/Component'
+import { FeatureSplitBlock } from './FeatureSplit/Component'
+import { ProjectsShowcaseBlock } from './ProjectShowcase/Component'
+import { CertificationsBlock } from './Certifications/Component'
+import { LogoGridBlock } from './LogoGrid/Component'
+import { MediaContentAccordionBlock } from './MediaContentAccordion/Component'
+import { DownloadBlock } from './Download/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -20,7 +26,12 @@ const blockComponents = {
   servicesGrid: ServicesGridBlock,
   statsCounter: StatsCounterBlock,
   testimonials: TestimonialsBlock,
-
+  featureSplit: FeatureSplitBlock,
+  projectsShowcase: ProjectsShowcaseBlock,
+  certifications: CertificationsBlock,
+  logoGrid: LogoGridBlock,
+  mediaContentAccordion: MediaContentAccordionBlock,
+  download: DownloadBlock,
 }
 
 export const RenderBlocks: React.FC<{

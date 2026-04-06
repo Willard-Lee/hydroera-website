@@ -209,7 +209,22 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ServicesGridBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | ServicesGridBlock
+    | TestimonialsBlock
+    | StatsCounterBlock
+    | FeatureSplitBlock
+    | ProjectsShowcaseBlock
+    | CertificationsBlock
+    | LogoGridBlock
+    | MediaContentAccordionBlock
+    | DownloadBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -940,6 +955,111 @@ export interface ServicesGridBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  /**
+   * Optional section heading (e.g. "What Our Clients Say")
+   */
+  heading?: string | null;
+  /**
+   * Optional text below the heading
+   */
+  subheading?: string | null;
+  /**
+   * How the testimonials are displayed
+   */
+  layout: 'carousel' | 'grid' | 'featured';
+  /**
+   * "Auto" pulls featured or most recent testimonials. "Hand-pick" lets you choose specific ones.
+   */
+  populateBy?: ('collection' | 'selection') | null;
+  /**
+   * When checked, only testimonials marked as "Featured" will appear.
+   */
+  onlyFeatured?: boolean | null;
+  /**
+   * Maximum number of testimonials to show
+   */
+  limit?: number | null;
+  /**
+   * Select specific testimonials to display
+   */
+  selectedDocs?: (number | Testimonial)[] | null;
+  /**
+   * Display a download button for public completion letters (surat penyelesaian)
+   */
+  showCompletionLetters?: boolean | null;
+  /**
+   * Display the star rating when available
+   */
+  showRating?: boolean | null;
+  /**
+   * Display the client company logo alongside the quote
+   */
+  showCompanyLogo?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  /**
+   * The testimonial quote from the client.
+   */
+  quote: string;
+  authorName: string;
+  authorRole?: string | null;
+  company?: string | null;
+  /**
+   * Optional logo shown alongside the testimonial.
+   */
+  companyLogo?: (number | null) | Media;
+  /**
+   * Optional star rating.
+   */
+  rating?: number | null;
+  /**
+   * Upload the official completion letter from the client.
+   */
+  completionLetter?: {
+    /**
+     * Upload the surat penyelesaian projek as a PDF.
+     */
+    file?: (number | null) | Media;
+    /**
+     * Name shown on the download button. Auto-uses company name if left empty.
+     */
+    label?: string | null;
+    /**
+     * If unchecked, the letter is saved for records but not shown publicly.
+     */
+    isPublic?: boolean | null;
+  };
+  /**
+   * Show this testimonial on the homepage and featured sections.
+   */
+  featured?: boolean | null;
+  /**
+   * Link this testimonial to the project it came from.
+   */
+  relatedProject?: (number | null) | Project;
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
 export interface Project {
@@ -1060,6 +1180,387 @@ export interface Project {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsCounterBlock".
+ */
+export interface StatsCounterBlock {
+  /**
+   * Optional heading above the stats (e.g. "HydroEra in Numbers")
+   */
+  heading?: string | null;
+  /**
+   * Choose the background style for this section
+   */
+  theme: 'light' | 'dark' | 'slate';
+  /**
+   * Add up to 4 statistics to display
+   */
+  stats: {
+    /**
+     * The number to display (e.g. 25, 500, 98)
+     */
+    value: number;
+    /**
+     * Text after the number (e.g. "+", "%", "M", " years")
+     */
+    suffix?: string | null;
+    /**
+     * Text before the number (e.g. "$", ">" )
+     */
+    prefix?: string | null;
+    /**
+     * Description below the number (e.g. "Years of Experience")
+     */
+    label: string;
+    /**
+     * Optional icon displayed above the number
+     */
+    icon?: ('none' | 'trophy' | 'users' | 'globe' | 'check' | 'building' | 'star' | 'clock' | 'zap') | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statsCounter';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureSplitBlock".
+ */
+export interface FeatureSplitBlock {
+  /**
+   * Small uppercase label above the heading (e.g. "ABOUT HYDROERA")
+   */
+  eyebrow?: string | null;
+  /**
+   * Main heading and paragraph text for this section
+   */
+  richText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Checkmark bullet points shown below the text (e.g. "Certified Technical Authority")
+   */
+  highlights?:
+    | {
+        /**
+         * Bold title (e.g. "Certified Technical Authority")
+         */
+        title: string;
+        /**
+         * Short description below the title
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  enableLink?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  /**
+   * Image for this section (landscape recommended, min 800px wide)
+   */
+  media: number | Media;
+  /**
+   * Which side the image appears on (text goes on the other side)
+   */
+  mediaPosition?: ('left' | 'right') | null;
+  /**
+   * Background colour for this section
+   */
+  background?: ('white' | 'grey' | 'dark') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureSplit';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectsShowcaseBlock".
+ */
+export interface ProjectsShowcaseBlock {
+  /**
+   * Small uppercase label (e.g. "OUR PROJECTS")
+   */
+  eyebrow?: string | null;
+  /**
+   * Section heading (e.g. "Recent Completed Projects")
+   */
+  heading: string;
+  /**
+   * Short intro text below the heading
+   */
+  description?: string | null;
+  populateBy?: ('collection' | 'selection') | null;
+  onlyFeatured?: boolean | null;
+  /**
+   * Number of projects to show
+   */
+  limit?: number | null;
+  selectedDocs?: (number | Project)[] | null;
+  enableViewAll?: boolean | null;
+  viewAllLink?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'projectsShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CertificationsBlock".
+ */
+export interface CertificationsBlock {
+  /**
+   * Small uppercase label (e.g. "CERTIFICATIONS & AUTHORIZATIONS")
+   */
+  eyebrow?: string | null;
+  /**
+   * Section heading (e.g. "Our Credentials")
+   */
+  heading: string;
+  /**
+   * Short intro text below the heading
+   */
+  description?: string | null;
+  layout?: ('carousel' | 'grid') | null;
+  certificates?:
+    | {
+        /**
+         * Certificate name (e.g. "EBARA SS Centre Appointment Letter")
+         */
+        title: string;
+        /**
+         * Who issued this (e.g. "EBARA Corporation", "SPAN", "CIDB")
+         */
+        issuingBody?: string | null;
+        /**
+         * Year issued or valid period (e.g. "2023", "2023-2026")
+         */
+        year?: string | null;
+        /**
+         * Upload a scan/photo of the certificate (JPG, PNG, or PDF). This is the main display image shown in the card.
+         */
+        certificateImage: number | Media;
+        /**
+         * Optional separate PDF file for download. If not provided, the certificate image will be used as the download link instead.
+         */
+        certificateFile?: (number | null) | Media;
+        /**
+         * Allow visitors to download this certificate
+         */
+        enableDownload?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'certifications';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoGridBlock".
+ */
+export interface LogoGridBlock {
+  /**
+   * Small uppercase label (e.g. "TRUSTED BY")
+   */
+  eyebrow?: string | null;
+  /**
+   * Section heading (e.g. "Our Partners & Principals")
+   */
+  heading?: string | null;
+  /**
+   * Short intro text below the heading
+   */
+  description?: string | null;
+  /**
+   * Grid shows all logos at once. Marquee auto-scrolls horizontally.
+   */
+  style?: ('grid' | 'marquee') | null;
+  logos?:
+    | {
+        /**
+         * Logo image — transparent PNG recommended, ideally 200-400px wide.
+         */
+        logo: number | Media;
+        /**
+         * Company/brand name — used as alt text and tooltip.
+         */
+        name: string;
+        /**
+         * Optional link to the partner website.
+         */
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  enableCta?: boolean | null;
+  ctaLink?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'logoGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaContentAccordionBlock".
+ */
+export interface MediaContentAccordionBlock {
+  /**
+   * Small uppercase label above the heading
+   */
+  eyebrow?: string | null;
+  /**
+   * Section heading
+   */
+  heading?: string | null;
+  /**
+   * Image displayed alongside the accordion items
+   */
+  media: number | Media;
+  mediaPosition?: ('left' | 'right') | null;
+  items?:
+    | {
+        /**
+         * Accordion item heading — shown when collapsed
+         */
+        title: string;
+        /**
+         * Content shown when expanded
+         */
+        content: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  background?: ('white' | 'grey') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaContentAccordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadBlock".
+ */
+export interface DownloadBlock {
+  /**
+   * Small uppercase label (e.g. "RESOURCES")
+   */
+  eyebrow?: string | null;
+  /**
+   * Section heading (e.g. "Downloads & Resources")
+   */
+  heading?: string | null;
+  /**
+   * Short intro text below the heading
+   */
+  description?: string | null;
+  layout?: ('grid' | 'list') | null;
+  files?:
+    | {
+        /**
+         * Display name (e.g. "EBARA Product Catalogue 2024")
+         */
+        name: string;
+        /**
+         * File type — controls the icon shown on the card.
+         */
+        fileType?: ('pdf' | 'xls' | 'image' | 'cad' | 'other') | null;
+        /**
+         * The file to download.
+         */
+        file: number | Media;
+        /**
+         * Optional preview thumbnail (shown in grid layout). Falls back to a file type icon if empty.
+         */
+        thumbnail?: (number | null) | Media;
+        /**
+         * Optional file size label (e.g. "2.4 MB")
+         */
+        fileSize?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  background?: ('white' | 'grey') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'download';
+}
+/**
  * Manage job listings shown on the Careers page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1153,62 +1654,6 @@ export interface Career {
    * Pin this role to the top of the careers page.
    */
   featured?: boolean | null;
-  publishedAt?: string | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials".
- */
-export interface Testimonial {
-  id: number;
-  /**
-   * The testimonial quote from the client.
-   */
-  quote: string;
-  authorName: string;
-  authorRole?: string | null;
-  company?: string | null;
-  /**
-   * Optional logo shown alongside the testimonial.
-   */
-  companyLogo?: (number | null) | Media;
-  /**
-   * Optional star rating.
-   */
-  rating?: number | null;
-  /**
-   * Upload the official completion letter from the client.
-   */
-  completionLetter?: {
-    /**
-     * Upload the surat penyelesaian projek as a PDF.
-     */
-    file?: (number | null) | Media;
-    /**
-     * Name shown on the download button. Auto-uses company name if left empty.
-     */
-    label?: string | null;
-    /**
-     * If unchecked, the letter is saved for records but not shown publicly.
-     */
-    isPublic?: boolean | null;
-  };
-  /**
-   * Show this testimonial on the homepage and featured sections.
-   */
-  featured?: boolean | null;
-  /**
-   * Link this testimonial to the project it came from.
-   */
-  relatedProject?: (number | null) | Project;
   publishedAt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -1544,6 +1989,14 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         servicesGrid?: T | ServicesGridBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
+        statsCounter?: T | StatsCounterBlockSelect<T>;
+        featureSplit?: T | FeatureSplitBlockSelect<T>;
+        projectsShowcase?: T | ProjectsShowcaseBlockSelect<T>;
+        certifications?: T | CertificationsBlockSelect<T>;
+        logoGrid?: T | LogoGridBlockSelect<T>;
+        mediaContentAccordion?: T | MediaContentAccordionBlockSelect<T>;
+        download?: T | DownloadBlockSelect<T>;
       };
   meta?:
     | T
@@ -1669,6 +2122,198 @@ export interface ServicesGridBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  layout?: T;
+  populateBy?: T;
+  onlyFeatured?: T;
+  limit?: T;
+  selectedDocs?: T;
+  showCompletionLetters?: T;
+  showRating?: T;
+  showCompanyLogo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsCounterBlock_select".
+ */
+export interface StatsCounterBlockSelect<T extends boolean = true> {
+  heading?: T;
+  theme?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        suffix?: T;
+        prefix?: T;
+        label?: T;
+        icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureSplitBlock_select".
+ */
+export interface FeatureSplitBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  richText?: T;
+  highlights?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  enableLink?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  media?: T;
+  mediaPosition?: T;
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectsShowcaseBlock_select".
+ */
+export interface ProjectsShowcaseBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  populateBy?: T;
+  onlyFeatured?: T;
+  limit?: T;
+  selectedDocs?: T;
+  enableViewAll?: T;
+  viewAllLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CertificationsBlock_select".
+ */
+export interface CertificationsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  layout?: T;
+  certificates?:
+    | T
+    | {
+        title?: T;
+        issuingBody?: T;
+        year?: T;
+        certificateImage?: T;
+        certificateFile?: T;
+        enableDownload?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoGridBlock_select".
+ */
+export interface LogoGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  style?: T;
+  logos?:
+    | T
+    | {
+        logo?: T;
+        name?: T;
+        url?: T;
+        id?: T;
+      };
+  enableCta?: T;
+  ctaLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaContentAccordionBlock_select".
+ */
+export interface MediaContentAccordionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  media?: T;
+  mediaPosition?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        content?: T;
+        id?: T;
+      };
+  background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DownloadBlock_select".
+ */
+export interface DownloadBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  layout?: T;
+  files?:
+    | T
+    | {
+        name?: T;
+        fileType?: T;
+        file?: T;
+        thumbnail?: T;
+        fileSize?: T;
+        id?: T;
+      };
+  background?: T;
   id?: T;
   blockName?: T;
 }

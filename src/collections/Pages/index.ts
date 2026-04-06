@@ -8,11 +8,20 @@ import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { ServicesGrid } from '@/blocks/ServicesGrid/config'
+import { TestimonialsBlock } from '@/blocks/Testimonials/config'
+import { FeatureSplit } from '@/blocks/FeatureSplit/config'
+import { StatsCounter } from '@/blocks/StatsCounter/config'
+import { ProjectsShowcase } from '@/blocks/ProjectShowcase/config'
+import { Certifications } from '@/blocks/Certifications/config'
+import { LogoGrid } from '@/blocks/LogoGrid/config'
+import { MediaContentAccordion } from '@/blocks/MediaContentAccordion/config'
+import { Download } from '@/blocks/Download/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+
 
 import {
   MetaDescriptionField,
@@ -20,7 +29,7 @@ import {
   MetaTitleField,
   OverviewField,
   PreviewField,
-} from '@payloadcms/plugin-seo/fields' // SEO fields for pages
+} from '@payloadcms/plugin-seo/fields'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -73,7 +82,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ServicesGrid],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ServicesGrid, TestimonialsBlock, StatsCounter, FeatureSplit, ProjectsShowcase, Certifications, LogoGrid, MediaContentAccordion, Download],
               required: true,
               admin: {
                 initCollapsed: true,
