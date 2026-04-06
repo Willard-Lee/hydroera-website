@@ -1,8 +1,8 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { anyone } from '../../access/anyone'
 import { slugField } from 'payload'
+import { revalidateTestimonial, revalidateDeleteTestimonial } from './hooks/revalidateTestimonials'
 
 export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
@@ -73,9 +73,6 @@ export const Testimonials: CollectionConfig = {
     },
 
     // ── Completion letter ─────────────────────────────────────────────────────
-    // Official surat from the client confirming project completion.
-    // Stored as a PDF upload — visible to admins, optionally shown on the
-    // testimonials page as a downloadable document.
     {
       name: 'completionLetter',
       type: 'group',
@@ -103,8 +100,6 @@ export const Testimonials: CollectionConfig = {
           },
         },
         {
-          // Controls whether the PDF is publicly visible on the frontend
-          // or kept internal for admin records only.
           name: 'isPublic',
           type: 'checkbox',
           label: 'Show download button on website',
@@ -128,14 +123,14 @@ export const Testimonials: CollectionConfig = {
       },
     },
     {
-        name: 'relatedProject',
-        type: 'relationship',
-        relationTo: 'projects',
-        label: 'Related project',
-        admin: {
-          position: 'sidebar',
-          description: 'Link this testimonial to the project it came from.',
-        },
+      name: 'relatedProject',
+      type: 'relationship',
+      relationTo: 'projects',
+      label: 'Related project',
+      admin: {
+        position: 'sidebar',
+        description: 'Link this testimonial to the project it came from.',
+      },
     },
     {
       name: 'publishedAt',
@@ -158,6 +153,10 @@ export const Testimonials: CollectionConfig = {
 
     slugField(),
   ],
+  hooks: {
+    afterChange: [revalidateTestimonial],
+    afterDelete: [revalidateDeleteTestimonial],
+  },
   versions: {
     drafts: {
       autosave: { interval: 100 },

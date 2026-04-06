@@ -209,7 +209,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | ServicesGridBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -870,6 +870,76 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesGridBlock".
+ */
+export interface ServicesGridBlock {
+  /**
+   * Main section heading (e.g. "Our Services")
+   */
+  heading: string;
+  /**
+   * Optional text that appears below the heading
+   */
+  subheading?: string | null;
+  /**
+   * Choose how the service cards are arranged
+   */
+  layout?: ('threeColumn' | 'twoColumn' | 'fourColumn') | null;
+  /**
+   * Add service cards that will appear in the grid
+   */
+  services?:
+    | {
+        /**
+         * Pick an icon that best represents this service
+         */
+        icon:
+          | 'pump'
+          | 'maintenance'
+          | 'installation'
+          | 'consulting'
+          | 'waterTreatment'
+          | 'testing'
+          | 'engineering'
+          | 'support'
+          | 'delivery'
+          | 'safety';
+        /**
+         * Service name (e.g. "Pump Installation")
+         */
+        title: string;
+        /**
+         * Short description of this service (max 200 characters)
+         */
+        description: string;
+        /**
+         * Enable to link this card to a page or URL
+         */
+        enableLink?: boolean | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
 export interface Project {
@@ -1473,6 +1543,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        servicesGrid?: T | ServicesGridBlockSelect<T>;
       };
   meta?:
     | T
@@ -1569,6 +1640,35 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesGridBlock_select".
+ */
+export interface ServicesGridBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  layout?: T;
+  services?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
