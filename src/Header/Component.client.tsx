@@ -2,7 +2,7 @@
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 
 import type { Header } from '@/payload-types'
 
@@ -19,22 +19,48 @@ interface HeaderClientProps {
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const [theme, setTheme] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
+  const lastScrollY = useRef(0)
 
   /* ── Reset header theme on route change ── */
   useEffect(() => {
     setHeaderTheme(null)
   }, [pathname, setHeaderTheme])
 
-  /* ── Sync header theme from hero (e.g. dark overlay hero sets theme to 'dark') ── */
+  /* ── Sync header theme from hero ── */
   useEffect(() => {
     if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
   }, [headerTheme, theme])
 
-  /* ── Track scroll position for sticky header background ── */
+  /* ── Check if admin bar is visible and offset header accordingly ── */
+  const [adminBarHeight, setAdminBarHeight] = useState(0)
+
+  useEffect(() => {
+    const checkAdminBar = () => {
+      const adminBar = document.querySelector('.admin-bar:not(.hidden)')
+      setAdminBarHeight(adminBar ? adminBar.getBoundingClientRect().height : 0)
+    }
+    checkAdminBar()
+    const observer = new MutationObserver(checkAdminBar)
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true })
+    return () => observer.disconnect()
+  }, [])
+
+  /* ── Track scroll: hide on scroll down, show on scroll up ── */
   const handleScroll = useCallback(() => {
-    setScrolled(window.scrollY > 20)
+    const currentScrollY = window.scrollY
+
+    setScrolled(currentScrollY > 20)
+
+    if (currentScrollY > 100) {
+      setHidden(currentScrollY > lastScrollY.current && currentScrollY > 100)
+    } else {
+      setHidden(false)
+    }
+
+    lastScrollY.current = currentScrollY
   }, [])
 
   useEffect(() => {
@@ -48,23 +74,22 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const logoVariant = isTransparent ? 'light' : 'dark'
 
   return (
-    /* ── Sticky header bar ──
-       - h-18 / md:h-20 → adjust these to change header height
-       - bg-white/95 + backdrop-blur → scrolled background
-       - bg-transparent → over dark hero images
-    */
     <header
+      style={{ top: adminBarHeight > 0 ? `${adminBarHeight}px` : undefined }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        hidden
+          ? '-translate-y-full' /* ← hidden when scrolling down */
+          : 'translate-y-0'
+      } ${
         scrolled
-          ? 'bg-white/80 dark:bg-hydroera-slate-dark/95 backdrop-blur-md shadow-sm' /* ← scrolled: frosted glass bg */
+          ? 'bg-white/80 dark:bg-hydroera-slate-dark/95 backdrop-blur-md shadow-sm'
           : isTransparent
-            ? 'bg-transparent' /* ← transparent over dark hero */
-            : 'bg-white dark:bg-hydroera-slate-dark' /* ← default solid bg */
+            ? 'bg-transparent'
+            : 'bg-white dark:bg-hydroera-slate-dark'
       }`}
       {...(theme ? { 'data-theme': theme } : {})}
     >
       <div className="container">
-        {/* ── Header height: change h-18 / md:h-20 to resize ── */}
         <div className="flex items-center justify-between h-18 md:h-20">
 
           {/* ══════ LEFT: Logo ══════ */}
@@ -85,19 +110,19 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               className={isTransparent ? 'text-white hover:bg-white/10' : 'text-foreground'}
             />
 
-            {/* CTA button (desktop only, from CMS global header) */}
+            {/* CTA button (desktop only) */}
             {data.cta?.label && (
               <div className="hidden lg:block">
                 <CMSLink
                   {...data.cta.link}
                   label={data.cta.label}
-                  appearance="default" /* ← uses primary gradient button style */
+                  appearance="default"
                   size="default"
                 />
               </div>
             )}
 
-            {/* Mobile hamburger menu (visible below lg breakpoint) */}
+            {/* Mobile hamburger menu */}
             <div className="lg:hidden">
               <MobileNav data={data} isTransparent={isTransparent} />
             </div>

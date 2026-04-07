@@ -1,8 +1,8 @@
-// Component.tsx is invoking the config.ts to display the front end.
-
 import React from 'react'
 import { cn } from '@/utilities/ui'
 import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
+import type { Media as MediaType } from '@/payload-types'
 import {
   Wrench,
   Settings,
@@ -15,16 +15,19 @@ import {
   Shield,
   type LucideIcon,
 } from 'lucide-react'
+
 type ServiceItem = {
   id?: string | null
   title: string
   description: string
-  icon: string
+  icon?: string | null
+  image?: MediaType | string | null
   enableLink?: boolean | null
   link?: Record<string, unknown> | null
 }
 
 type ServicesGridBlockProps = {
+  eyebrow?: string | null
   heading?: string | null
   subheading?: string | null
   layout?: 'twoColumn' | 'threeColumn' | 'fourColumn' | null
@@ -72,17 +75,22 @@ const layoutClasses: Record<string, string> = {
 }
 
 export const ServicesGridBlock: React.FC<ServicesGridBlockProps> = ({
+  eyebrow,
   heading,
   subheading,
   layout,
   services,
 }) => {
   const gridClass = layoutClasses[layout || 'threeColumn']
-
   return (
     <section className="container my-16">
       {/* Section header */}
       <div className="max-w-2xl mx-auto text-center mb-12">
+        {eyebrow && (
+          <span className="inline-block text-sm font-semibold uppercase tracking-widest text-hydroera-blue mb-3">
+            {eyebrow}
+          </span>
+        )}
         {heading && (
           <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
             {heading}
@@ -97,54 +105,71 @@ export const ServicesGridBlock: React.FC<ServicesGridBlockProps> = ({
       {services && services.length > 0 && (
         <div className={cn('grid gap-6 md:gap-8', gridClass)}>
           {services.map((service, index) => {
-            const IconComponent = iconMap[service.icon] || Cog
+            const hasImage = service.image && typeof service.image === 'object'
+            const IconComponent = iconMap[service.icon || ''] || Cog
             const hasLink = service.enableLink && service.link
 
             const cardContent = (
               <div
                 className={cn(
-                  'group relative bg-card rounded-lg border border-border p-6 md:p-8',
+                  'group relative bg-card rounded-lg border border-border overflow-hidden',
                   'transition-all duration-300 ease-out',
                   'hover:border-hydroera-blue/30 hover:shadow-[0_4px_20px_rgba(11,79,138,0.08)]',
                   'hover:-translate-y-0.5',
                   hasLink && 'cursor-pointer',
                 )}
               >
-                {/* Icon */}
-                <div
-                  className={cn(
-                    'inline-flex items-center justify-center w-12 h-12 rounded-lg mb-5',
-                    'bg-hydroera-accent text-hydroera-blue',
-                    'transition-colors duration-300',
-                    'group-hover:bg-hydroera-blue group-hover:text-white',
-                  )}
-                >
-                  <IconComponent className="w-6 h-6" />
-                </div>
-
-                {/* Title */}
-                <h3 className="text-lg font-semibold text-foreground mb-2">{service.title}</h3>
-
-                {/* Description */}
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {service.description}
-                </p>
-
-                {/* Link indicator */}
-                {hasLink && (
-                  <div className="mt-4 flex items-center text-sm font-medium text-hydroera-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span>Learn more</span>
-                    <svg
-                      className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
+                {/* Image */}
+                {hasImage && (
+                  <div className="relative w-full aspect-[16/10] overflow-hidden">
+                    <Media
+                      resource={service.image as MediaType}
+                      imgClassName="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                      fill
+                    />
                   </div>
                 )}
+
+                {/* Card body */}
+                <div className={cn('p-6 md:p-8', hasImage && 'pt-5 md:pt-6')}>
+                  {/* Icon — only shown when no image */}
+                  {!hasImage && (
+                    <div
+                      className={cn(
+                        'inline-flex items-center justify-center w-12 h-12 rounded-lg mb-5',
+                        'bg-hydroera-accent text-hydroera-blue',
+                        'transition-colors duration-300',
+                        'group-hover:bg-hydroera-blue group-hover:text-white',
+                      )}
+                    >
+                      <IconComponent className="w-6 h-6" />
+                    </div>
+                  )}
+
+                  {/* Title */}
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{service.title}</h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {service.description}
+                  </p>
+
+                  {/* Link indicator */}
+                  {hasLink && (
+                    <div className="mt-4 flex items-center text-sm font-medium text-hydroera-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span>Learn more</span>
+                      <svg
+                        className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
               </div>
             )
 

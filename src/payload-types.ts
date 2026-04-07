@@ -82,16 +82,11 @@ export interface Config {
     search: Search;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
-    'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {
-    'payload-folders': {
-      documentsAndFolders: 'payload-folders' | 'media';
-    };
-  };
+  collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -108,7 +103,6 @@ export interface Config {
     search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
-    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -308,7 +302,7 @@ export interface Post {
  */
 export interface Media {
   id: number;
-  alt?: string | null;
+  alt: string;
   caption?: {
     root: {
       type: string;
@@ -324,7 +318,6 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
-  folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -394,32 +387,6 @@ export interface Media {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-folders".
- */
-export interface FolderInterface {
-  id: number;
-  name: string;
-  folder?: (number | null) | FolderInterface;
-  documentsAndFolders?: {
-    docs?: (
-      | {
-          relationTo?: 'payload-folders';
-          value: number | FolderInterface;
-        }
-      | {
-          relationTo?: 'media';
-          value: number | Media;
-        }
-    )[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  folderType?: 'media'[] | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -889,6 +856,10 @@ export interface Form {
  */
 export interface ServicesGridBlock {
   /**
+   * Small label above the heading (e.g. "What We Do")
+   */
+  eyebrow?: string | null;
+  /**
    * Main section heading (e.g. "Our Services")
    */
   heading: string;
@@ -899,26 +870,33 @@ export interface ServicesGridBlock {
   /**
    * Choose how the service cards are arranged
    */
-  layout?: ('threeColumn' | 'twoColumn' | 'fourColumn') | null;
+  layout?: ('twoColumn' | 'threeColumn' | 'fourColumn') | null;
   /**
    * Add service cards that will appear in the grid
    */
   services?:
     | {
         /**
-         * Pick an icon that best represents this service
+         * Optional image for this service card. If set, the icon is hidden.
          */
-        icon:
-          | 'pump'
-          | 'maintenance'
-          | 'installation'
-          | 'consulting'
-          | 'waterTreatment'
-          | 'testing'
-          | 'engineering'
-          | 'support'
-          | 'delivery'
-          | 'safety';
+        image?: (number | null) | Media;
+        /**
+         * Pick an icon (only shown when no image is uploaded)
+         */
+        icon?:
+          | (
+              | 'pump'
+              | 'maintenance'
+              | 'installation'
+              | 'consulting'
+              | 'waterTreatment'
+              | 'testing'
+              | 'engineering'
+              | 'support'
+              | 'delivery'
+              | 'safety'
+            )
+          | null;
         /**
          * Service name (e.g. "Pump Installation")
          */
@@ -1905,10 +1883,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'search';
         value: number | Search;
-      } | null)
-    | ({
-        relationTo: 'payload-folders';
-        value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -2101,12 +2075,14 @@ export interface FormBlockSelect<T extends boolean = true> {
  * via the `definition` "ServicesGridBlock_select".
  */
 export interface ServicesGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   subheading?: T;
   layout?: T;
   services?:
     | T
     | {
+        image?: T;
         icon?: T;
         title?: T;
         description?: T;
@@ -2361,7 +2337,6 @@ export interface PostsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
-  folder?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2897,18 +2872,6 @@ export interface PayloadJobsSelect<T extends boolean = true> {
   queue?: T;
   waitUntil?: T;
   processing?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-folders_select".
- */
-export interface PayloadFoldersSelect<T extends boolean = true> {
-  name?: T;
-  folder?: T;
-  documentsAndFolders?: T;
-  folderType?: T;
   updatedAt?: T;
   createdAt?: T;
 }

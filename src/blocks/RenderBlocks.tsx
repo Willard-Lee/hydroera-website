@@ -16,6 +16,9 @@ import { CertificationsBlock } from './Certifications/Component'
 import { LogoGridBlock } from './LogoGrid/Component'
 import { MediaContentAccordionBlock } from './MediaContentAccordion/Component'
 import { DownloadBlock } from './Download/Component'
+import { ScrollReveal } from '@/components/ScrollReveal'
+
+type Animation = 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'zoom-in' | 'fade'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -33,6 +36,8 @@ const blockComponents = {
   mediaContentAccordion: MediaContentAccordionBlock,
   download: DownloadBlock,
 }
+
+const animations: Animation[] = ['fade-up', 'fade-up', 'zoom-in', 'fade-left', 'fade-right', 'fade-up']
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
@@ -52,10 +57,17 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
-                  {/* @ts-expect-error there may be some mismatch between the expected types here */}
-                  <Block {...block} disableInnerContainer />
-                </div>
+                <ScrollReveal
+                  key={index}
+                  animation={animations[index % animations.length]}
+                  delay={index === 0 ? 100 : 0}
+                  duration={700}
+                >
+                  <div className="my-16">
+                    {/* @ts-expect-error there may be some mismatch between the expected types here */}
+                    <Block {...block} disableInnerContainer />
+                  </div>
+                </ScrollReveal>
               )
             }
           }
