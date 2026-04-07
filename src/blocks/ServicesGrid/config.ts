@@ -1,4 +1,12 @@
+// config.ts is defining what is in the servicegrid as a function to invoke
 import type { Block } from 'payload'
+
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
 
@@ -9,14 +17,9 @@ export const ServicesGrid: Block = {
     plural: 'Services Grids',
     singular: 'Services Grid',
   },
+  // Fields include
+  // Header, Subheader, layout (grid), services (array), description, icon, title
   fields: [
-    {
-      name: 'eyebrow',
-      type: 'text',
-      admin: {
-        description: 'Small label above the heading (e.g. "What We Do")',
-      },
-    },
     {
       name: 'heading',
       type: 'text',
@@ -37,8 +40,8 @@ export const ServicesGrid: Block = {
       type: 'select',
       defaultValue: 'threeColumn',
       options: [
-        { label: '2-Column Grid', value: 'twoColumn' },
         { label: '3-Column Grid', value: 'threeColumn' },
+        { label: '2-Column Grid', value: 'twoColumn' },
         { label: '4-Column Grid', value: 'fourColumn' },
       ],
       admin: {
@@ -60,16 +63,9 @@ export const ServicesGrid: Block = {
       },
       fields: [
         {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'media',
-          admin: {
-            description: 'Optional image for this service card. If set, the icon is hidden.',
-          },
-        },
-        {
           name: 'icon',
           type: 'select',
+          required: true,
           options: [
             { label: 'Pump', value: 'pump' },
             { label: 'Maintenance / Wrench', value: 'maintenance' },
@@ -83,8 +79,7 @@ export const ServicesGrid: Block = {
             { label: 'Safety / Shield', value: 'safety' },
           ],
           admin: {
-            description: 'Pick an icon (only shown when no image is uploaded)',
-            condition: (_data, siblingData) => !siblingData?.image,
+            description: 'Pick an icon that best represents this service',
           },
         },
         {

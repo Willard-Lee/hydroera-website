@@ -65,6 +65,11 @@
 @source inline("bg-white/80");
 @source inline("backdrop-blur-md");
 @source inline("backdrop-blur-sm");
+@source inline("bg-black/0");
+@source inline("bg-black/30");
+@source inline("bg-black/60");
+@source inline("bg-black/80");
+@source inline("bg-black/100");
 @source inline("from-hydroera-blue");
 @source inline("to-hydroera-cyan");
 @source inline("bg-gradient-to-r");

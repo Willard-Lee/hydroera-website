@@ -162,6 +162,18 @@ export interface Page {
   title: string;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    /**
+     * Small label above the heading (e.g. "Leading Pump Solutions in Malaysia")
+     */
+    eyebrow?: string | null;
+    /**
+     * Alignment of the hero text content
+     */
+    textAlignment?: ('left' | 'center' | 'right') | null;
+    /**
+     * Darkness of the overlay on the background image
+     */
+    overlayOpacity?: ('0' | '30' | '60' | '80' | '100') | null;
     richText?: {
       root: {
         type: string;
@@ -856,10 +868,6 @@ export interface Form {
  */
 export interface ServicesGridBlock {
   /**
-   * Small label above the heading (e.g. "What We Do")
-   */
-  eyebrow?: string | null;
-  /**
    * Main section heading (e.g. "Our Services")
    */
   heading: string;
@@ -870,33 +878,26 @@ export interface ServicesGridBlock {
   /**
    * Choose how the service cards are arranged
    */
-  layout?: ('twoColumn' | 'threeColumn' | 'fourColumn') | null;
+  layout?: ('threeColumn' | 'twoColumn' | 'fourColumn') | null;
   /**
    * Add service cards that will appear in the grid
    */
   services?:
     | {
         /**
-         * Optional image for this service card. If set, the icon is hidden.
+         * Pick an icon that best represents this service
          */
-        image?: (number | null) | Media;
-        /**
-         * Pick an icon (only shown when no image is uploaded)
-         */
-        icon?:
-          | (
-              | 'pump'
-              | 'maintenance'
-              | 'installation'
-              | 'consulting'
-              | 'waterTreatment'
-              | 'testing'
-              | 'engineering'
-              | 'support'
-              | 'delivery'
-              | 'safety'
-            )
-          | null;
+        icon:
+          | 'pump'
+          | 'maintenance'
+          | 'installation'
+          | 'consulting'
+          | 'waterTreatment'
+          | 'testing'
+          | 'engineering'
+          | 'support'
+          | 'delivery'
+          | 'safety';
         /**
          * Service name (e.g. "Pump Installation")
          */
@@ -1936,6 +1937,9 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
+        eyebrow?: T;
+        textAlignment?: T;
+        overlayOpacity?: T;
         richText?: T;
         links?:
           | T
@@ -2075,14 +2079,12 @@ export interface FormBlockSelect<T extends boolean = true> {
  * via the `definition` "ServicesGridBlock_select".
  */
 export interface ServicesGridBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
   heading?: T;
   subheading?: T;
   layout?: T;
   services?:
     | T
     | {
-        image?: T;
         icon?: T;
         title?: T;
         description?: T;

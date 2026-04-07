@@ -1,52 +1,70 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import type { Page } from '@/payload-types'
 
-import { CMSLink } from '@/components/Link'
-import RichText from '@/components/RichText'
+import { Media } from '@/components/Media'
+import { HeroContent } from '@/heros/HeroContent'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, richText }) => {
-  const { setHeaderTheme } = useHeaderTheme()
+const opacityValues: Record<string, number> = {
+  '0': 0,
+  '30': 0.3,
+  '60': 0.6,
+  '80': 0.8,
+  '100': 1,
+}
 
-  useEffect(() => {
-    setHeaderTheme('dark')
-  })
+const gradientDirection: Record<string, string> = {
+  left: 'to right',
+  center: 'to right',
+  right: 'to left',
+}
+
+type HighImpactHeroProps = Page['hero'] & {
+  eyebrow?: string | null
+  textAlignment?: 'left' | 'center' | 'right' | null
+  overlayOpacity?: string | null
+}
+
+export const HighImpactHero: React.FC<HighImpactHeroProps> = ({
+  links,
+  media,
+  richText,
+  eyebrow,
+  textAlignment,
+  overlayOpacity,
+}) => {
+  const align = textAlignment || 'left'
+  const opacity = opacityValues[overlayOpacity || '60'] ?? 0.6
+  const direction = gradientDirection[align]
 
   return (
     <div
-      className="relative -mt-[10.4rem] flex items-end bg-[#0b1120] text-white min-h-[85vh]"
+      className="relative flex items-center text-white min-h-[85vh]"
       data-theme="dark"
     >
-      <div className="container z-10 relative pb-16 pt-40">
-        <div className="max-w-[48rem]">
-          {richText && (
-            <RichText
-              className="mb-8 [&_h1]:text-5xl [&_h1]:md:text-6xl [&_h1]:lg:text-7xl [&_h1]:font-bold [&_h1]:leading-[1.1] [&_h1]:tracking-tight [&_p]:text-lg [&_p]:text-white/60 [&_p]:mt-6 [&_p]:max-w-[40rem]"
-              data={richText}
-              enableGutter={false}
-            />
-          )}
-          {Array.isArray(links) && links.length > 0 && (
-            <ul className="flex gap-4 mt-8">
-              {links.map(({ link }, i) => {
-                return (
-                  <li key={i}>
-                    <CMSLink
-                      {...link}
-                      className={
-                        i === 0
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white border-blue-600'
-                          : 'bg-transparent hover:bg-white/10 text-white border border-white/30'
-                      }
-                    />
-                  </li>
-                )
-              })}
-            </ul>
-          )}
-        </div>
+      {/* Background image */}
+      {media && typeof media === 'object' && (
+        <Media fill imgClassName="object-cover -z-20" priority resource={media} />
+      )}
+
+      {/* Gradient overlay */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background: `linear-gradient(${direction}, rgba(11,17,32,${Math.min(opacity + 0.15, 1)}) 0%, rgba(11,17,32,${opacity}) 45%, rgba(11,17,32,${opacity * 0.4}) 100%)`,
+        }}
+      />
+
+      {/* Content */}
+      <div className="container z-10 relative py-20">
+        <HeroContent
+          eyebrow={eyebrow}
+          richText={richText}
+          links={links}
+          textAlignment={textAlignment}
+          variant="high"
+        />
       </div>
     </div>
   )
