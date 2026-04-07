@@ -74,7 +74,7 @@ export default buildConfig({
   plugins:[
     ...plugins,
     vercelBlobStorage({
-      enabled: process.env.NODE_ENV === 'production',
+      enabled: true,
       collections: {
         media: true,
       },
