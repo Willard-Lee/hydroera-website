@@ -66,8 +66,8 @@ export const FeatureSplitBlock: React.FC<FeatureSplitBlockProps> = (props) => {
             {eyebrow && (
               <p
                 className={cn(
-                  'text-xs font-semibold uppercase tracking-[0.15em] mb-4',
-                  isDark ? 'text-hydroera-blue-light' : 'text-hydroera-blue',
+                  'text-sm font-bold uppercase tracking-[0.15em] mb-4',
+                  isDark ? 'text-hydroera-blue-light' : 'text-primary',
                 )}
               >
                 {eyebrow}

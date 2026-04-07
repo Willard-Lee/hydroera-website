@@ -28,7 +28,7 @@ export const Logo = (props: Props) => {
       fetchPriority={priority}
       decoding="async"
       className={cn(
-        'w-auto h-9',
+        'w-auto h-12', // adjust logo size here
         variant === 'light' && 'brightness-0 invert',
         className,
       )}

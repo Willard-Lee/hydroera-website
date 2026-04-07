@@ -50,10 +50,13 @@
 @source inline("bg-hydroera-blue");
 @source inline("bg-hydroera-blue-dark");
 @source inline("bg-hydroera-blue-light");
+@source inline("bg-hydroera-cyan");
 @source inline("text-hydroera-blue");
 @source inline("text-hydroera-blue-dark");
 @source inline("text-hydroera-blue-light");
+@source inline("text-hydroera-cyan");
 @source inline("border-hydroera-blue/20");
+@source inline("border-hydroera-blue/30");
 @source inline("bg-hydroera-slate");
 @source inline("bg-hydroera-slate-dark");
 @source inline("text-hydroera-slate");
@@ -62,6 +65,10 @@
 @source inline("bg-white/80");
 @source inline("backdrop-blur-md");
 @source inline("backdrop-blur-sm");
+@source inline("from-hydroera-blue");
+@source inline("to-hydroera-cyan");
+@source inline("bg-gradient-to-r");
+@source inline("bg-gradient-to-br");
 
 @theme {
   --breakpoint-sm: 40rem;
@@ -73,9 +80,10 @@
   --font-sans: var(--font-plus-jakarta), system-ui, -apple-system, sans-serif;
 
   /* HydroEra Industrial Color Palette */
-  --color-hydroera-blue: #0B4F8A;
-  --color-hydroera-blue-dark: #0A2E52;
-  --color-hydroera-blue-light: #3B82C4;
+  --color-hydroera-blue: #165DFB;
+  --color-hydroera-blue-dark: #1248C8;  /* darker shade for hover */
+  --color-hydroera-blue-light: #3B82F6; /* blue-500 */
+  --color-hydroera-cyan: #0090bc;
   --color-hydroera-slate: #475569;
   --color-hydroera-slate-dark: #1E293B;
   --color-hydroera-slate-light: #94A3B8;
@@ -122,7 +130,7 @@
   }
 }
 
-/* HydroEra Light Theme (Industrial Blue/Grey/White) */
+/* HydroEra Light Theme — primary: #155dfc, accent gradient: #155dfc → #0090bc */
 :root {
   --background: oklch(98.5% 0.002 240deg);
   --foreground: oklch(16% 0.02 250deg);
@@ -130,8 +138,8 @@
   --card-foreground: oklch(16% 0.02 250deg);
   --popover: oklch(100% 0 0deg);
   --popover-foreground: oklch(16% 0.02 250deg);
-  --primary: oklch(35% 0.1 240deg);
-  --primary-foreground: oklch(98.5% 0 0deg);
+  --primary: #165DFB;
+  --primary-foreground: #ffffff;
   --secondary: oklch(95% 0.01 240deg);
   --secondary-foreground: oklch(25% 0.03 250deg);
   --muted: oklch(95% 0.01 240deg);
@@ -142,21 +150,21 @@
   --destructive-foreground: oklch(57.7% 0.245 27.325deg);
   --border: oklch(90% 0.01 240deg);
   --input: oklch(90% 0.01 240deg);
-  --ring: oklch(55% 0.08 240deg);
-  --chart-1: oklch(35% 0.1 240deg);
-  --chart-2: oklch(60% 0.118 184.704deg);
+  --ring: #165DFB;
+  --chart-1: #165DFB;
+  --chart-2: #0090bc;
   --chart-3: oklch(39.8% 0.07 227.392deg);
   --chart-4: oklch(82.8% 0.189 84.429deg);
   --chart-5: oklch(76.9% 0.188 70.08deg);
   --radius: 0.5rem;
   --sidebar: oklch(98.5% 0.002 240deg);
   --sidebar-foreground: oklch(16% 0.02 250deg);
-  --sidebar-primary: oklch(35% 0.1 240deg);
-  --sidebar-primary-foreground: oklch(98.5% 0 0deg);
+  --sidebar-primary: #165DFB;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: oklch(95% 0.01 240deg);
   --sidebar-accent-foreground: oklch(25% 0.03 250deg);
   --sidebar-border: oklch(90% 0.01 240deg);
-  --sidebar-ring: oklch(55% 0.08 240deg);
+  --sidebar-ring: #155dfc;
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);

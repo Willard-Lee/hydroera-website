@@ -15,29 +15,34 @@ export const HeaderNav: React.FC<{ data: HeaderType; isTransparent?: boolean }> 
   const navItems = data?.navItems || []
 
   return (
+    /* ── Navigation wrapper ── */
     <nav className="flex items-center gap-1">
+
+      {/* ── Nav links (from CMS global header → navItems) ── */}
       {navItems.map(({ link }, i) => {
         return (
           <CMSLink
             key={i}
             {...link}
             appearance="link"
-            className={`px-3 py-2 text-sm font-medium transition-colors rounded-md hover:bg-black/5 dark:hover:bg-white/10 ${
+            className={`px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-black/5 dark:hover:bg-white/10 ${
               isTransparent
                 ? 'text-white/90 hover:text-white'
-                : 'text-foreground/80 hover:text-foreground'
+                : 'text-foreground/80 hover:text-primary'
             }`}
           />
         )
       })}
+
+      {/* ── Search icon button ── */}
       <Link
         href="/search"
         className={`ml-2 p-2 rounded-md transition-colors hover:bg-black/5 dark:hover:bg-white/10 ${
-          isTransparent ? 'text-white/90 hover:text-white' : 'text-foreground/80 hover:text-foreground'
+          isTransparent ? 'text-white/90 hover:text-white' : 'text-foreground/80 hover:text-primary'
         }`}
       >
         <span className="sr-only">Search</span>
-        <SearchIcon className="w-4 h-4" />
+        <SearchIcon className="w-5 h-5" />
       </Link>
     </nav>
   )

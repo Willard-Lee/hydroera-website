@@ -125,7 +125,7 @@ export const DownloadBlock: React.FC<DownloadBlockProps & { id?: string }> = (pr
         {(eyebrow || heading || description) && (
           <div className="mb-10 max-w-2xl">
             {eyebrow && (
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-hydroera-blue mb-3">
+              <p className="text-sm font-bold uppercase tracking-[0.15em] text-primary mb-3">
                 {eyebrow}
               </p>
             )}

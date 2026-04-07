@@ -23,7 +23,7 @@ export const LogoGridBlock: React.FC<LogoGridBlockProps & { id?: string }> = (pr
         {(eyebrow || heading || description) && (
           <div className="mb-12 text-center max-w-2xl mx-auto">
             {eyebrow && (
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-hydroera-blue mb-3">
+              <p className="text-sm font-bold uppercase tracking-[0.15em] text-primary mb-3">
                 {eyebrow}
               </p>
             )}

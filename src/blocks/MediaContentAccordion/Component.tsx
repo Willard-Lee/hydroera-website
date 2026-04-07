@@ -28,7 +28,7 @@ export const MediaContentAccordionBlock: React.FC<Props & { id?: string }> = (pr
         {(eyebrow || heading) && (
           <div className="mb-12 max-w-2xl">
             {eyebrow && (
-              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-hydroera-blue mb-3">
+              <p className="text-sm font-bold uppercase tracking-[0.15em] text-primary mb-3">
                 {eyebrow}
               </p>
             )}

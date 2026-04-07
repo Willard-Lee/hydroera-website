@@ -107,7 +107,7 @@ export const ProjectsShowcaseClient: React.FC<{
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
         <div className="max-w-xl">
           {eyebrow && (
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-hydroera-blue mb-2">
+            <p className="text-sm font-bold uppercase tracking-[0.15em] text-primary mb-2">
               {eyebrow}
             </p>
           )}
@@ -126,6 +126,7 @@ export const ProjectsShowcaseClient: React.FC<{
           <div className="hidden md:block shrink-0">
             <CMSLink
               {...viewAllLink}
+              appearance="default"
               size="default"
             />
           </div>
@@ -149,6 +150,7 @@ export const ProjectsShowcaseClient: React.FC<{
         <div className="md:hidden mt-8 text-center">
           <CMSLink
             {...viewAllLink}
+            appearance="default"
             size="default"
           />
         </div>
