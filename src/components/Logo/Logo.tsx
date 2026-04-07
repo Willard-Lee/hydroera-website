@@ -32,7 +32,7 @@ export const Logo = (props: Props) => {
         variant === 'light' && 'brightness-0 invert',
         className,
       )}
-      src="/media/hydroera-logo.png"
+      src="/hydroera-logo.png"
     />
   )
 }
