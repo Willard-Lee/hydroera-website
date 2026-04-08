@@ -1,12 +1,4 @@
-// config.ts is defining what is in the servicegrid as a function to invoke
 import type { Block } from 'payload'
-
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
 
@@ -17,9 +9,14 @@ export const ServicesGrid: Block = {
     plural: 'Services Grids',
     singular: 'Services Grid',
   },
-  // Fields include
-  // Header, Subheader, layout (grid), services (array), description, icon, title
   fields: [
+    {
+      name: 'eyebrow',
+      type: 'text',
+      admin: {
+        description: 'Small label above the heading (e.g. "Our Services")',
+      },
+    },
     {
       name: 'heading',
       type: 'text',
@@ -63,23 +60,11 @@ export const ServicesGrid: Block = {
       },
       fields: [
         {
-          name: 'icon',
-          type: 'select',
-          required: true,
-          options: [
-            { label: 'Pump', value: 'pump' },
-            { label: 'Maintenance / Wrench', value: 'maintenance' },
-            { label: 'Installation / Settings', value: 'installation' },
-            { label: 'Consulting / Lightbulb', value: 'consulting' },
-            { label: 'Water Treatment / Droplets', value: 'waterTreatment' },
-            { label: 'Testing / Gauge', value: 'testing' },
-            { label: 'Engineering / Cog', value: 'engineering' },
-            { label: 'Support / Headset', value: 'support' },
-            { label: 'Delivery / Truck', value: 'delivery' },
-            { label: 'Safety / Shield', value: 'safety' },
-          ],
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
           admin: {
-            description: 'Pick an icon that best represents this service',
+            description: 'Image for this service card',
           },
         },
         {

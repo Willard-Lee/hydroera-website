@@ -79,6 +79,7 @@ export const HeroContent: React.FC<HeroContentProps> = ({
             className={`${variant === 'high' ? 'mb-8' : ''} ${alignment.text} ${headingSize} [&_h1]:font-bold [&_h1]:leading-[1.1] [&_h1]:tracking-tight [&_p]:text-lg [&_p]:text-white/60 [&_p]:mt-6`}
             data={richText}
             enableGutter={false}
+            enableProse={false}
           />
         )}
 

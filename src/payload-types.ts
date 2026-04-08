@@ -868,6 +868,10 @@ export interface Form {
  */
 export interface ServicesGridBlock {
   /**
+   * Small label above the heading (e.g. "Our Services")
+   */
+  eyebrow?: string | null;
+  /**
    * Main section heading (e.g. "Our Services")
    */
   heading: string;
@@ -885,19 +889,9 @@ export interface ServicesGridBlock {
   services?:
     | {
         /**
-         * Pick an icon that best represents this service
+         * Image for this service card
          */
-        icon:
-          | 'pump'
-          | 'maintenance'
-          | 'installation'
-          | 'consulting'
-          | 'waterTreatment'
-          | 'testing'
-          | 'engineering'
-          | 'support'
-          | 'delivery'
-          | 'safety';
+        image?: (number | null) | Media;
         /**
          * Service name (e.g. "Pump Installation")
          */
@@ -2079,13 +2073,14 @@ export interface FormBlockSelect<T extends boolean = true> {
  * via the `definition` "ServicesGridBlock_select".
  */
 export interface ServicesGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   subheading?: T;
   layout?: T;
   services?:
     | T
     | {
-        icon?: T;
+        image?: T;
         title?: T;
         description?: T;
         enableLink?: T;

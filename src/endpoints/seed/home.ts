@@ -97,46 +97,34 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         layout: 'threeColumn',
         services: [
           {
-            icon: 'pump',
             title: 'Pump Supply',
             description:
               'Wide range of submersible, centrifugal, and booster pumps sourced from leading global manufacturers.',
-            enableLink: false,
           },
           {
-            icon: 'installation',
             title: 'Pump Installation',
             description:
               'Professional installation by certified technicians for residential, commercial, and industrial projects.',
-            enableLink: false,
           },
           {
-            icon: 'maintenance',
             title: 'Maintenance & Repair',
             description:
               'Scheduled preventive maintenance and rapid-response repair services to minimise downtime.',
-            enableLink: false,
           },
           {
-            icon: 'engineering',
             title: 'System Engineering',
             description:
               'Custom pump system design and hydraulic engineering to match project-specific flow and pressure requirements.',
-            enableLink: false,
           },
           {
-            icon: 'waterTreatment',
             title: 'Water Treatment',
             description:
               'Integrated solutions for water treatment plants, including dosing pumps and filtration systems.',
-            enableLink: false,
           },
           {
-            icon: 'consulting',
             title: 'Technical Consultancy',
             description:
               'Expert guidance on pump selection, energy efficiency, and compliance with local standards and regulations.',
-            enableLink: false,
           },
         ],
       },

@@ -9,8 +9,10 @@ import {
   JSXConvertersFunction,
   LinkJSXConverter,
   RichText as ConvertRichText,
+  TextJSXConverter,
 } from '@payloadcms/richtext-lexical/react'
 
+import React from 'react'
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 
 import type {
@@ -35,9 +37,33 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
+// Map of TextStateFeature color keys → CSS values (must match hero config + defaultLexical config)
+const textStateColorMap: Record<string, Record<string, string>> = {
+  white: { color: '#ffffff' },
+  blue: { color: '#165DFB' },
+  'light-blue': { color: '#3B82F6' },
+  cyan: { color: '#06B6D4' },
+  green: { color: '#22C55E' },
+  yellow: { color: '#EAB308' },
+  red: { color: '#EF4444' },
+  muted: { color: 'rgba(150,150,150,0.6)' },
+}
+
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
+  // Custom text converter that handles TextStateFeature colors
+  text: (args) => {
+    // First, use the default text converter for format (bold, italic, etc.)
+    const converter = TextJSXConverter.text
+    const base = typeof converter === 'function' ? converter(args) : args.node.text
+    // Check for state data (serialized under '$' key)
+    const stateData = (args.node as Record<string, unknown>)['$'] as Record<string, string> | undefined
+    if (stateData?.color && textStateColorMap[stateData.color]) {
+      return <span style={textStateColorMap[stateData.color]}>{base}</span>
+    }
+    return base
+  },
   blocks: {
     banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
     mediaBlock: ({ node }) => (
