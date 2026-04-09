@@ -16,6 +16,7 @@ import { Certifications } from '@/blocks/Certifications/config'
 import { LogoGrid } from '@/blocks/LogoGrid/config'
 import { MediaContentAccordion } from '@/blocks/MediaContentAccordion/config'
 import { Download } from '@/blocks/Download/config'
+import { IndustriesGrid } from '@/blocks/IndustriesGrid/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -64,11 +65,14 @@ export const Pages: CollectionConfig<'pages'> = {
       }),
     useAsTitle: 'title',
   },
-  fields: [ // Above Tab: Pages Title
+  fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        description: 'Page title e.g. "About Us", "Contact", "Products"',
+      },
     },
     {
       type: 'tabs',
@@ -82,7 +86,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ServicesGrid, TestimonialsBlock, StatsCounter, FeatureSplit, ProjectsShowcase, Certifications, LogoGrid, MediaContentAccordion, Download],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ServicesGrid, TestimonialsBlock, StatsCounter, FeatureSplit, ProjectsShowcase, Certifications, LogoGrid, MediaContentAccordion, Download, IndustriesGrid],
               required: true,
               admin: {
                 initCollapsed: true,
@@ -136,9 +140,6 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   versions: {
     drafts: {
-      autosave: {
-        interval: 100, // We set this interval for optimal live preview
-      },
       schedulePublish: true,
     },
     maxPerDoc: 50,

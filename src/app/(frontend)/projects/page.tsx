@@ -216,7 +216,7 @@ export default async function ProjectsPage({ searchParams: searchParamsPromise }
 
       {/* Filter bar */}
       <Suspense fallback={null}>
-        <ProjectsFilter />
+        <ProjectsFilter totalResults={projects.totalDocs} />
       </Suspense>
 
       {/* Project listing grid */}

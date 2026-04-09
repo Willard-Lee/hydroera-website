@@ -493,7 +493,6 @@ export const Projects: CollectionConfig<'projects'> = {
   // schedulePublish lets editors set a future publish date in the sidebar.
   versions: {
     drafts: {
-      autosave: { interval: 100 },
       schedulePublish: true,
     },
     maxPerDoc: 50,

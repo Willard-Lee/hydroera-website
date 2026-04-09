@@ -24,9 +24,22 @@ export const StatsCounter: Block = {
         { label: 'Light (white background)', value: 'light' },
         { label: 'Dark (blue background)', value: 'dark' },
         { label: 'Slate (dark grey background)', value: 'slate' },
+        { label: 'Gradient (blue gradient)', value: 'gradient' },
       ],
       admin: {
         description: 'Choose the background style for this section',
+      },
+    },
+    {
+      name: 'style',
+      type: 'select',
+      defaultValue: 'default',
+      options: [
+        { label: 'Default (number + label)', value: 'default' },
+        { label: 'Progress Ring (circular indicator)', value: 'ring' },
+      ],
+      admin: {
+        description: 'Visual style for stat items. "Ring" works best with percentage values.',
       },
     },
     {

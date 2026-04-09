@@ -41,7 +41,7 @@ export const ServicesGridBlock: React.FC<ServicesGridBlockProps> = ({
       {/* Section header */}
       <div className="max-w-2xl mx-auto text-center mb-12">
         {eyebrow && (
-          <span className="inline-block text-sm font-semibold uppercase tracking-widest text-hydroera-blue mb-3">
+          <span className="inline-block text-sm font-bold uppercase tracking-widest text-hydroera-blue mb-3">
             {eyebrow}
           </span>
         )}

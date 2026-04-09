@@ -70,6 +70,9 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        description: 'Blog post title e.g. "How to Choose the Right Pump for Your Application"',
+      },
     },
     {
       type: 'tabs',
@@ -77,18 +80,30 @@ export const Posts: CollectionConfig<'posts'> = {
         // Tab 1 : HERO (Name, Content, excerpt, readtime)
         {
           fields: [
-            { // Hero Image
+            {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+              admin: {
+                description: 'Featured image shown on the post card and at the top of the article.',
+              },
             },
-            { // Short summary for cards
+            {
               name: 'excerpt',
               type: 'textarea',
+              admin: {
+                description: 'Brief summary shown on post cards. Keep under 160 characters.',
+                rows: 3,
+              },
             },
-            { // Estimate reading minutes
+            {
               name: 'readTime',
               type: 'number',
+              admin: {
+                description: 'Estimated reading time in minutes.',
+                placeholder: 'e.g. 5',
+                step: 1,
+              },
             },
             { // Blocks: Banner, code, media block, call to action
               name: 'content',
@@ -147,10 +162,13 @@ export const Posts: CollectionConfig<'posts'> = {
               hasMany: true,
               relationTo: 'categories',
             },
-            { // Tags
+            {
               name: 'tags',
               type: 'text',
               hasMany: true,
+              admin: {
+                description: 'Add tags for content grouping (e.g. "pumps", "maintenance", "case-study").',
+              },
             },
           ],
           label: 'Meta',
@@ -185,26 +203,27 @@ export const Posts: CollectionConfig<'posts'> = {
       ],
     },
     // SIDEBAR
-    { // PostType : Article, Guide, Projec etc
+    {
       name: 'postType',
-      type: 'select', // When using a select type you must include options in field to select.
+      type: 'select',
       admin: {
         position: 'sidebar',
+        description: 'Content type — affects how the post is displayed and filtered.',
       },
       options: [
-        {label: 'Article', value: 'article'}, // Add more postType here 
-        {label: 'Guide', value: 'guide'}, // You can createa a relation for this making it accessible to other
-      ]
+        { label: 'Article', value: 'article' },
+        { label: 'Guide', value: 'guide' },
+      ],
     },
-    { // Featured Post 
+    {
       name: 'featured',
       type: 'checkbox',
       label: 'Featured Post',
       defaultValue: false,
       admin: {
         position: 'sidebar',
-        description: 'Pin this post to featured section on the homepage' 
-      }
+        description: 'Pin this post to the featured section on the homepage.',
+      },
     },
     { // Published At 
       name: 'publishedAt',
@@ -268,9 +287,6 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   versions: { // VERSION CONTROL
     drafts: {
-      autosave: {
-        interval: 100, // We set this interval for optimal live preview
-      },
       schedulePublish: true,
     },
     maxPerDoc: 50,

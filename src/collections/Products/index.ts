@@ -72,18 +72,18 @@ export const Products: CollectionConfig<'products'> = {
   },
   versions: {
     drafts: {
-      autosave: {
-        interval: 375, 
-      },
       schedulePublish: true,
     },
     maxPerDoc: 50,
   },
   fields: [
-    {  // Above Tab: Product title
-      name: 'title', 
+    {
+      name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        description: 'Product name e.g. "EBARA Centrifugal Pump FSA Series"',
+      },
     },
     {
       type: 'tabs',
@@ -163,12 +163,20 @@ export const Products: CollectionConfig<'products'> = {
                 {
                     name: 'material',
                     type: 'text',
+                    admin: {
+                      placeholder: 'e.g. Cast iron, Stainless steel 316',
+                      description: 'Primary material of the product body.',
+                    },
                 },
                 {
                     name: 'dimensions',
                     type: 'text',
-                }
-              ]
+                    admin: {
+                      placeholder: 'e.g. 450 x 300 x 280 mm',
+                      description: 'Overall dimensions (L x W x H).',
+                    },
+                },
+              ],
             }
           ]
         },
@@ -224,11 +232,23 @@ export const Products: CollectionConfig<'products'> = {
         description: 'Select the product category'
       },
     },
-    { 
+    {
       name: 'publishedAt',
       type: 'date',
       admin: {
         position: 'sidebar',
+        date: { pickerAppearance: 'dayAndTime' },
+        description: 'Auto-set when first published. Can be set manually.',
+      },
+      hooks: {
+        beforeChange: [
+          ({ siblingData, value }) => {
+            if (siblingData._status === 'published' && !value) {
+              return new Date()
+            }
+            return value
+          },
+        ],
       },
     },
     slugField(),

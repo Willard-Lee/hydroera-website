@@ -28,7 +28,26 @@ export const BackToTop: React.FC = () => {
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none',
       )}
     >
-      <ArrowUp className="w-5 h-5" />
+      {/* Arrow on mobile */}
+      <ArrowUp className="w-5 h-5 md:hidden" />
+
+      {/* Mouse scroll icon on desktop */}
+      <svg
+        className="hidden md:block w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {/* Mouse body */}
+        <rect x="7" y="4" width="10" height="16" rx="5" />
+        {/* Scroll wheel line — animated */}
+        <line x1="12" y1="8" x2="12" y2="11" className="animate-bounce" />
+        {/* Up arrow above mouse */}
+        <path d="M9 2l3-1.5L15 2" strokeWidth={1.5} />
+      </svg>
     </button>
   )
 }

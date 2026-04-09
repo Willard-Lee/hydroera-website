@@ -159,6 +159,9 @@ export interface UserAuthOperations {
  */
 export interface Page {
   id: number;
+  /**
+   * Page title e.g. "About Us", "Contact", "Products"
+   */
   title: string;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
@@ -230,6 +233,7 @@ export interface Page {
     | LogoGridBlock
     | MediaContentAccordionBlock
     | DownloadBlock
+    | IndustriesGridBlock
   )[];
   meta?: {
     title?: string | null;
@@ -255,9 +259,21 @@ export interface Page {
  */
 export interface Post {
   id: number;
+  /**
+   * Blog post title e.g. "How to Choose the Right Pump for Your Application"
+   */
   title: string;
+  /**
+   * Featured image shown on the post card and at the top of the article.
+   */
   heroImage?: (number | null) | Media;
+  /**
+   * Brief summary shown on post cards. Keep under 160 characters.
+   */
   excerpt?: string | null;
+  /**
+   * Estimated reading time in minutes.
+   */
   readTime?: number | null;
   content: {
     root: {
@@ -277,6 +293,9 @@ export interface Post {
   relatedPosts?: (number | Post)[] | null;
   relatedProducts?: (number | null) | Product;
   categories?: (number | Category)[] | null;
+  /**
+   * Add tags for content grouping (e.g. "pumps", "maintenance", "case-study").
+   */
   tags?: string[] | null;
   meta?: {
     title?: string | null;
@@ -286,9 +305,12 @@ export interface Post {
     image?: (number | null) | Media;
     description?: string | null;
   };
+  /**
+   * Content type — affects how the post is displayed and filtered.
+   */
   postType?: ('article' | 'guide') | null;
   /**
-   * Pin this post to featured section on the homepage
+   * Pin this post to the featured section on the homepage.
    */
   featured?: boolean | null;
   publishedAt?: string | null;
@@ -406,6 +428,9 @@ export interface Media {
  */
 export interface Product {
   id: number;
+  /**
+   * Product name e.g. "EBARA Centrifugal Pump FSA Series"
+   */
   title: string;
   /**
    * Main Product image shown on the listing card and detail page.
@@ -441,7 +466,13 @@ export interface Product {
     [k: string]: unknown;
   } | null;
   specifications?: {
+    /**
+     * Primary material of the product body.
+     */
     material?: string | null;
+    /**
+     * Overall dimensions (L x W x H).
+     */
     dimensions?: string | null;
   };
   /**
@@ -460,6 +491,9 @@ export interface Product {
    * Select the product category
    */
   category: number | Category;
+  /**
+   * Auto-set when first published. Can be set manually.
+   */
   publishedAt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -1164,7 +1198,11 @@ export interface StatsCounterBlock {
   /**
    * Choose the background style for this section
    */
-  theme: 'light' | 'dark' | 'slate';
+  theme: 'light' | 'dark' | 'slate' | 'gradient';
+  /**
+   * Visual style for stat items. "Ring" works best with percentage values.
+   */
+  style?: ('default' | 'ring') | null;
   /**
    * Add up to 4 statistics to display
    */
@@ -1532,6 +1570,57 @@ export interface DownloadBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'download';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IndustriesGridBlock".
+ */
+export interface IndustriesGridBlock {
+  /**
+   * Small label above the heading (e.g. "Industries We Serve")
+   */
+  eyebrow?: string | null;
+  /**
+   * Main section heading
+   */
+  heading: string;
+  /**
+   * Optional supporting text below the heading
+   */
+  subheading?: string | null;
+  /**
+   * Add industry cards to display in the grid
+   */
+  industries?:
+    | {
+        /**
+         * Choose an icon that represents this industry
+         */
+        icon:
+          | 'water'
+          | 'factory'
+          | 'building'
+          | 'agriculture'
+          | 'oilgas'
+          | 'power'
+          | 'mining'
+          | 'government'
+          | 'hospitality'
+          | 'construction';
+        /**
+         * Industry name (e.g. "Water & Wastewater Treatment")
+         */
+        title: string;
+        /**
+         * Short description of how HydroEra serves this industry (max 200 chars)
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'industriesGrid';
 }
 /**
  * Manage job listings shown on the Careers page.
@@ -1969,6 +2058,7 @@ export interface PagesSelect<T extends boolean = true> {
         logoGrid?: T | LogoGridBlockSelect<T>;
         mediaContentAccordion?: T | MediaContentAccordionBlockSelect<T>;
         download?: T | DownloadBlockSelect<T>;
+        industriesGrid?: T | IndustriesGridBlockSelect<T>;
       };
   meta?:
     | T
@@ -2123,6 +2213,7 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
 export interface StatsCounterBlockSelect<T extends boolean = true> {
   heading?: T;
   theme?: T;
+  style?: T;
   stats?:
     | T
     | {
@@ -2287,6 +2378,25 @@ export interface DownloadBlockSelect<T extends boolean = true> {
         id?: T;
       };
   background?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IndustriesGridBlock_select".
+ */
+export interface IndustriesGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
+  industries?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

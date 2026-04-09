@@ -379,7 +379,6 @@ export const Careers: CollectionConfig<'careers'> = {
   // Enables draft/publish workflow and live preview.
   versions: {
     drafts: {
-      autosave: { interval: 100 },
       schedulePublish: true,
     },
     maxPerDoc: 50,

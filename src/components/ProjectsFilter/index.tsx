@@ -27,15 +27,21 @@ const statuses = [
   { label: 'In Progress', value: 'in-progress' },
 ]
 
-export const ProjectsFilter: React.FC = () => {
+interface ProjectsFilterProps {
+  totalResults: number
+}
+
+export const ProjectsFilter: React.FC<ProjectsFilterProps> = ({ totalResults }) => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(null)
 
   const currentSearch = searchParams.get('q') || ''
   const currentSector = searchParams.get('sector') || ''
   const currentYear = searchParams.get('year') || ''
   const currentStatus = searchParams.get('status') || ''
+  const hasFilters = !!(currentSearch || currentSector || currentYear || currentStatus)
 
   const [yearOpen, setYearOpen] = useState(false)
   const [statusOpen, setStatusOpen] = useState(false)
@@ -65,6 +71,18 @@ export const ProjectsFilter: React.FC = () => {
     [searchParams, router, pathname],
   )
 
+  const debouncedSearch = useCallback(
+    (value: string) => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+      debounceRef.current = setTimeout(() => updateParams('q', value), 300)
+    },
+    [updateParams],
+  )
+
+  const clearAll = useCallback(() => {
+    router.push(pathname, { scroll: false })
+  }, [router, pathname])
+
   const selectedYearLabel = years.find((y) => y.value === currentYear)?.label || 'All Years'
   const selectedStatusLabel = statuses.find((s) => s.value === currentStatus)?.label || 'All Status'
 
@@ -88,7 +106,7 @@ export const ProjectsFilter: React.FC = () => {
               type="text"
               placeholder="Search projects..."
               defaultValue={currentSearch}
-              onChange={(e) => updateParams('q', e.target.value)}
+              onChange={(e) => debouncedSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-border rounded-full focus:outline-none focus:ring-2 focus:ring-hydroera-blue/20 focus:border-hydroera-blue transition-colors"
             />
           </div>
@@ -113,7 +131,7 @@ export const ProjectsFilter: React.FC = () => {
             })}
           </div>
 
-          {/* Dropdowns */}
+          {/* Dropdowns + clear + count */}
           <div className="flex items-center gap-2 ml-auto">
             {/* Year dropdown */}
             <div ref={yearRef} className="relative">
@@ -200,6 +218,19 @@ export const ProjectsFilter: React.FC = () => {
                 </div>
               )}
             </div>
+
+            {/* Clear + count */}
+            {hasFilters && (
+              <button
+                onClick={clearAll}
+                className="text-sm font-medium text-hydroera-blue hover:underline whitespace-nowrap"
+              >
+                Clear all
+              </button>
+            )}
+            <span className="text-sm text-muted-foreground whitespace-nowrap">
+              {totalResults} {totalResults === 1 ? 'project' : 'projects'}
+            </span>
           </div>
         </div>
       </div>
