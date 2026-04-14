@@ -40,7 +40,7 @@ export const HighImpactHero: React.FC<HighImpactHeroProps> = ({
 
   return (
     <div
-      className="relative flex items-center text-white min-h-[85vh]"
+      className="relative flex items-center text-white h-screen"
       data-theme="dark"
     >
       {/* Background image */}

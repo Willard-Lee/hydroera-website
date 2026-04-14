@@ -33,9 +33,28 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
   }, [headerTheme, theme])
 
-  /* ── Track scroll: hide on scroll down, show on scroll up ── */
+  /* ── Track AdminBar height so the header offsets below it ── */
+  const [adminBarHeight, setAdminBarHeight] = useState(0)
+
+  useEffect(() => {
+    const updateAdminBarHeight = () => {
+      const adminBar = document.querySelector('.admin-bar:not(.hidden)') as HTMLElement | null
+      setAdminBarHeight(adminBar ? adminBar.offsetHeight : 0)
+    }
+
+    updateAdminBarHeight()
+    const observer = new MutationObserver(updateAdminBarHeight)
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true })
+    return () => observer.disconnect()
+  }, [])
+
+  /* ── Track scroll: hide on scroll down, show on scroll up; track if at top ── */
+  const [atTop, setAtTop] = useState(true)
+
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY
+
+    setAtTop(currentScrollY <= 10)
 
     if (currentScrollY > 100) {
       setHidden(currentScrollY > lastScrollY.current)
@@ -54,21 +73,26 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-transform duration-300 bg-white dark:bg-hydroera-slate-dark shadow-sm ${
+      className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
         hidden ? '-translate-y-full' : 'translate-y-0'
+      } ${
+        atTop
+          ? 'bg-transparent text-white'
+          : 'bg-white dark:bg-hydroera-slate-dark shadow-sm text-foreground'
       }`}
+      style={{ top: adminBarHeight }}
     >
       <div className="container">
         <div className="flex items-center justify-between h-18 md:h-20">
 
           {/* ══════ LEFT: Logo ══════ */}
           <Link href="/" className="shrink-0 relative z-10">
-            <Logo loading="eager" priority="high" />
+            <Logo loading="eager" priority="high" variant={atTop ? 'light' : 'dark'} />
           </Link>
 
           {/* ══════ CENTER: Desktop navigation links ══════ */}
           <div className="hidden lg:flex items-center justify-center flex-1 px-8">
-            <HeaderNav data={data} />
+            <HeaderNav data={data} isTransparent={atTop} />
           </div>
 
           {/* ══════ RIGHT: Theme toggle + CTA button + Mobile menu ══════ */}

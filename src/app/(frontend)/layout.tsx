@@ -1,13 +1,18 @@
 import type { Metadata } from 'next'
-
 import { cn } from '@/utilities/ui'
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Playfair_Display, Inter } from 'next/font/google'
 import { GeistMono } from 'geist/font/mono'
 import React from 'react'
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const playfair = Playfair_Display({
   subsets: ['latin'],
-  variable: '--font-plus-jakarta',
+  variable: '--font-playfair',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
 })
 
@@ -27,7 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled } = await draftMode()
 
   return (
-    <html className={cn(plusJakartaSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html className={cn(playfair.variable, inter.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />

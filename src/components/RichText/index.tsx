@@ -39,6 +39,8 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 
 // Map of TextStateFeature color keys → CSS values (must match hero config + defaultLexical config)
 const textStateColorMap: Record<string, Record<string, string>> = {
+  black: { color: '#000000'},
+  grey: {color: '#808080'},
   white: { color: '#ffffff' },
   blue: { color: '#165DFB' },
   'light-blue': { color: '#3B82F6' },

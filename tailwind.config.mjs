@@ -11,6 +11,16 @@ const config = {
               h1: {
                 fontWeight: '700',
                 marginBottom: '0.25em',
+                fontFamily: 'var(--font-heading), serif',
+              },
+              h2: {
+                fontFamily: 'var(--font-heading), serif',
+              },
+              h3: {
+                fontFamily: 'var(--font-heading), serif',
+              },
+              h4: {
+                fontFamily: 'var(--font-heading), serif',
               },
             },
           ],

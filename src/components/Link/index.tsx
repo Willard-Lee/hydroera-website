@@ -1,5 +1,6 @@
 import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
+import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -60,6 +61,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}
+        {appearance === 'default' && <ArrowRight />}
       </Link>
     </Button>
   )

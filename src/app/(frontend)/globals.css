@@ -19,6 +19,7 @@
   h6 {
     font-weight: unset;
     font-size: unset;
+    font-family: var(--font-heading), serif;
   }
 
   html {
@@ -27,7 +28,7 @@
 
   h1 { font-weight: 700; }
   h2 { font-weight: 600; }
-  h3 { font-weight: 600; }
+  h3 { font-weight: 500; }
 }
 
 @plugin "@tailwindcss/typography";
@@ -81,8 +82,9 @@
   --breakpoint-lg: 64rem;
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 86rem;
-  --font-mono: var(--font-geist-mono);
-  --font-sans: var(--font-plus-jakarta), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-inter);
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-playfair);
 
   /* HydroEra Industrial Color Palette */
   --color-hydroera-blue: #165DFB;
@@ -173,6 +175,9 @@
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);
+  --font-heading: var(--font-playfair);
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono);
 }
 
 /* HydroEra Dark Theme */
@@ -212,6 +217,9 @@
   --success: oklch(28% 0.1 200deg);
   --warning: oklch(35% 0.08 70deg);
   --error: oklch(45% 0.1 25deg);
+  --font-heading: var(--font-playfair);
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono);
 }
 
 @theme inline {
@@ -262,6 +270,7 @@
   }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col antialiased;
+    font-family: var(--font-sans);
   }
 }
 
