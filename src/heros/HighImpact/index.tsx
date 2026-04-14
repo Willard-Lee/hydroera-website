@@ -21,12 +21,14 @@ const gradientDirection: Record<string, string> = {
 }
 
 type HighImpactHeroProps = Page['hero'] & {
+  breadcrumbs?: { label: string; url?: string | null }[] | null
   eyebrow?: string | null
   textAlignment?: 'left' | 'center' | 'right' | null
   overlayOpacity?: string | null
 }
 
 export const HighImpactHero: React.FC<HighImpactHeroProps> = ({
+  breadcrumbs,
   links,
   media,
   richText,
@@ -59,6 +61,7 @@ export const HighImpactHero: React.FC<HighImpactHeroProps> = ({
       {/* Content */}
       <div className="container z-10 relative py-20">
         <HeroContent
+          breadcrumbs={breadcrumbs}
           eyebrow={eyebrow}
           richText={richText}
           links={links}

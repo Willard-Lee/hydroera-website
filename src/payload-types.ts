@@ -166,6 +166,19 @@ export interface Page {
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     /**
+     * Breadcrumb trail displayed above the heading
+     */
+    breadcrumbs?:
+      | {
+          label: string;
+          /**
+           * URL path to link to (e.g. "/", "/about", "/products"). Leave empty for the current page (last item).
+           */
+          url?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
      * Small label above the heading (e.g. "Leading Pump Solutions in Malaysia")
      */
     eyebrow?: string | null;
@@ -2020,6 +2033,13 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
+        breadcrumbs?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+              id?: T;
+            };
         eyebrow?: T;
         textAlignment?: T;
         overlayOpacity?: T;

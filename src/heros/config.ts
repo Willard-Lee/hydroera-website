@@ -40,6 +40,28 @@ export const hero: Field = {
       required: true,
     },
     {
+      name: 'breadcrumbs',
+      type: 'array',
+      admin: {
+        description: 'Breadcrumb trail displayed above the heading',
+        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+      },
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'url',
+          type: 'text',
+          admin: {
+            description: 'URL path to link to (e.g. "/", "/about", "/products"). Leave empty for the current page (last item).',
+          },
+        },
+      ],
+    },
+    {
       name: 'eyebrow',
       type: 'text',
       admin: {

@@ -65,7 +65,7 @@ export const RenderBlocks: React.FC<{
                   delay={index === 0 ? 100 : 0}
                   duration={700}
                 >
-                  <div className="my-16">
+                  <div className={index === 0 ? 'mb-16' : 'my-16'}>
                     {/* @ts-expect-error there may be some mismatch between the expected types here */}
                     <Block {...block} disableInnerContainer />
                   </div>

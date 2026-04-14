@@ -9,7 +9,7 @@ import type { Where } from 'payload'
 import { Media } from '@/components/Media'
 import { RenderHero } from '@/heros/RenderHero'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { ProjectsFilter } from '@/components/ProjectsFilter'
+import { ProjectsSidebar } from '@/components/ProjectsSidebar'
 import { FeaturedProjectsSlider } from '@/components/FeaturedProjectsSlider'
 import { Section } from '@/components/Section'
 import { Container } from '@/components/Container'
@@ -17,7 +17,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { generateMeta } from '@/utilities/generateMeta'
 
 type Args = {
-  searchParams: Promise<{ q?: string; sector?: string; year?: string; status?: string }>
+  searchParams: Promise<{ q?: string; sector?: string; yearMin?: string; yearMax?: string; status?: string }>
 }
 
 const statusColors: Record<string, string> = {
@@ -59,7 +59,8 @@ export default async function ProjectsPage({ searchParams: searchParamsPromise }
   const searchParams = await searchParamsPromise
   const query = searchParams.q || ''
   const sectorFilter = searchParams.sector || ''
-  const yearFilter = searchParams.year || ''
+  const yearMinFilter = searchParams.yearMin || ''
+  const yearMaxFilter = searchParams.yearMax || ''
   const statusFilter = searchParams.status || ''
 
   const payload = await getPayload({ config: configPromise })
@@ -97,8 +98,11 @@ export default async function ProjectsPage({ searchParams: searchParamsPromise }
   if (sectorFilter) {
     andConditions.push({ sector: { equals: sectorFilter } })
   }
-  if (yearFilter) {
-    andConditions.push({ completionYear: { equals: Number(yearFilter) } })
+  if (yearMinFilter) {
+    andConditions.push({ completionYear: { greater_than_equal: Number(yearMinFilter) } })
+  }
+  if (yearMaxFilter) {
+    andConditions.push({ completionYear: { less_than_equal: Number(yearMaxFilter) } })
   }
   if (statusFilter) {
     andConditions.push({ projectStatus: { equals: statusFilter } })
@@ -118,7 +122,26 @@ export default async function ProjectsPage({ searchParams: searchParamsPromise }
     where,
   })
 
-  const hasFilters = !!(query || sectorFilter || yearFilter || statusFilter)
+  // Get all distinct years from projects for the year slider
+  const allProjects = await payload.find({
+    collection: 'projects',
+    draft: false,
+    limit: 0,
+    overrideAccess: false,
+    where: { _status: { equals: 'published' } },
+    select: { completionYear: true },
+    pagination: false,
+  })
+
+  const projectYears = [
+    ...new Set(
+      allProjects.docs
+        .map((p) => p.completionYear)
+        .filter((y): y is number => typeof y === 'number' && y > 0),
+    ),
+  ].sort((a, b) => a - b)
+
+  const hasFilters = !!(query || sectorFilter || yearMinFilter || yearMaxFilter || statusFilter)
 
   return (
     <>
@@ -214,14 +237,19 @@ export default async function ProjectsPage({ searchParams: searchParamsPromise }
         </Section>
       )}
 
-      {/* Filter bar */}
-      <Suspense fallback={null}>
-        <ProjectsFilter totalResults={projects.totalDocs} />
-      </Suspense>
-
-      {/* Project listing grid */}
+      {/* Main content: sidebar + project grid */}
       <Section background="white" spacing="lg">
-        <Container>
+        <Container size="wide">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Left sidebar — search, sector, year, status filters */}
+            <aside className="w-full lg:w-72 shrink-0">
+              <Suspense fallback={null}>
+                <ProjectsSidebar totalResults={projects.totalDocs} years={projectYears} />
+              </Suspense>
+            </aside>
+
+            {/* Right — project grid */}
+            <div className="flex-1 min-w-0">
           {projects.docs.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
               {projects.docs.map((project) => (
@@ -307,6 +335,8 @@ export default async function ProjectsPage({ searchParams: searchParamsPromise }
               )}
             </div>
           )}
+            </div>
+          </div>
         </Container>
       </Section>
 

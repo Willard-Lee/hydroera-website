@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
@@ -26,7 +27,13 @@ const alignmentClasses: Record<Alignment, { wrapper: string; container: string; 
   },
 }
 
+interface BreadcrumbItem {
+  label: string
+  url?: string | null
+}
+
 interface HeroContentProps {
+  breadcrumbs?: BreadcrumbItem[] | null
   eyebrow?: string | null
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   richText?: any
@@ -37,6 +44,7 @@ interface HeroContentProps {
 }
 
 export const HeroContent: React.FC<HeroContentProps> = ({
+  breadcrumbs,
   eyebrow,
   richText,
   links,
@@ -52,11 +60,34 @@ export const HeroContent: React.FC<HeroContentProps> = ({
       : '[&_h1]:text-4xl [&_h1]:md:text-5xl [&_h1]:lg:text-6xl'
 
 
-  const maxWidth = variant === 'high' ? 'max-w-2xl' : 'max-w-xl'
+  const maxWidth = variant === 'high' ? 'max-w-2xl' : 'max-w-3xl'
 
   return (
     <div className={`w-full flex ${alignment.wrapper}`}>
       <div className={`${maxWidth} flex flex-col ${alignment.container}`}>
+        {/* Breadcrumbs */}
+        {breadcrumbs && breadcrumbs.length > 0 && (
+          <nav aria-label="Breadcrumb" className="mb-6">
+            <ol className="flex items-center gap-2 text-sm">
+              {breadcrumbs.map((item, i) => {
+                const isLast = i === breadcrumbs.length - 1
+                return (
+                  <li key={i} className="flex items-center gap-2">
+                    {i > 0 && <span className="text-white/40">/</span>}
+                    {item.url && !isLast ? (
+                      <Link href={item.url} className="text-white/60 hover:text-white text-semibold transition-colors">
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <span className="text-blue-400 font-semibold">{item.label}</span>
+                    )}
+                  </li>
+                )
+              })}
+            </ol>
+          </nav>
+        )}
+
         {/* Eyebrow */}
         {eyebrow && variant === 'high' && (
           <span
