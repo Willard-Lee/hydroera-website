@@ -22,10 +22,10 @@ const fileTypeIcons: Record<string, React.FC<{ className?: string }>> = {
 }
 
 const fileTypeColors: Record<string, string> = {
-  pdf: 'bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400',
-  xls: 'bg-green-50 text-green-600 dark:bg-green-950/30 dark:text-green-400',
-  image: 'bg-purple-50 text-purple-600 dark:bg-purple-950/30 dark:text-purple-400',
-  cad: 'bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400',
+  pdf: 'bg-red-50 text-red-600',
+  xls: 'bg-green-50 text-green-600',
+  image: 'bg-purple-50 text-purple-600',
+  cad: 'bg-amber-50 text-amber-600',
   other: 'bg-muted text-muted-foreground',
 }
 

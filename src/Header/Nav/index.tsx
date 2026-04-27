@@ -25,7 +25,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; isTransparent?: boolean }> 
             key={i}
             {...link}
             appearance="link"
-            className={`px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-black/5 dark:hover:bg-white/10 ${
+            className={`px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-black/5 ${
               isTransparent
                 ? 'text-white/90 hover:text-white'
                 : 'text-foreground/80 hover:text-primary'
@@ -37,7 +37,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; isTransparent?: boolean }> 
       {/* ── Search icon button ── */}
       <Link
         href="/search"
-        className={`ml-2 p-2 rounded-md transition-colors hover:bg-black/5 dark:hover:bg-white/10 ${
+        className={`ml-2 p-2 rounded-md transition-colors hover:bg-black/5 ${
           isTransparent ? 'text-white/90 hover:text-white' : 'text-foreground/80 hover:text-primary'
         }`}
       >

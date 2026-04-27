@@ -10,7 +10,6 @@ import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
 import { MobileNav } from './MobileNav'
 import { CMSLink } from '@/components/Link'
-import { ThemeToggle } from '@/components/ThemeToggle'
 
 interface HeaderClientProps {
   data: Header
@@ -71,35 +70,37 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
+  const isDarkHero = theme === 'dark'
+  const isTransparent = atTop && isDarkHero
+
   return (
     <header
       className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
         hidden ? '-translate-y-full' : 'translate-y-0'
       } ${
         atTop
-          ? 'bg-transparent text-white'
-          : 'bg-white dark:bg-hydroera-slate-dark shadow-sm text-foreground'
+          ? isDarkHero
+            ? 'bg-transparent text-white'
+            : 'bg-white/80 backdrop-blur-md text-foreground'
+          : 'bg-white shadow-sm text-foreground'
       }`}
       style={{ top: adminBarHeight }}
     >
       <div className="container">
-        <div className="flex items-center justify-between h-18 md:h-20">
+        <div className="flex items-center justify-between h-16 md:h-20">
 
           {/* ══════ LEFT: Logo ══════ */}
           <Link href="/" className="shrink-0 relative z-10">
-            <Logo loading="eager" priority="high" variant={atTop ? 'light' : 'dark'} />
+            <Logo loading="eager" priority="high" variant={isTransparent ? 'light' : 'dark'} />
           </Link>
 
           {/* ══════ CENTER: Desktop navigation links ══════ */}
           <div className="hidden lg:flex items-center justify-center flex-1 px-8">
-            <HeaderNav data={data} isTransparent={atTop} />
+            <HeaderNav data={data} isTransparent={isTransparent} />
           </div>
 
           {/* ══════ RIGHT: Theme toggle + CTA button + Mobile menu ══════ */}
           <div className="flex items-center gap-3 relative z-10">
-
-            {/* Dark/Light mode toggle */}
-            <ThemeToggle />
 
             {/* CTA button (desktop only) */}
             {data.cta?.label && (
@@ -115,7 +116,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
             {/* Mobile hamburger menu */}
             <div className="lg:hidden">
-              <MobileNav data={data} />
+              <MobileNav data={data} isTransparent={isTransparent} />
             </div>
           </div>
         </div>

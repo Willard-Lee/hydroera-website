@@ -3,7 +3,6 @@
 
 @config '../../../tailwind.config.mjs';
 
-@custom-variant dark (&:is([data-theme='dark'] *));
 @custom-variant sm (@media (width >= theme(--breakpoint-sm)));
 @custom-variant md (@media (width >= theme(--breakpoint-md)));
 @custom-variant lg (@media (width >= theme(--breakpoint-lg)));
@@ -180,47 +179,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* HydroEra Dark Theme */
-[data-theme='dark'] {
-  --background: oklch(14% 0.02 250deg);
-  --foreground: oklch(96% 0.005 240deg);
-  --card: oklch(18% 0.02 250deg);
-  --card-foreground: oklch(96% 0.005 240deg);
-  --popover: oklch(14% 0.02 250deg);
-  --popover-foreground: oklch(96% 0.005 240deg);
-  --primary: oklch(65% 0.12 240deg);
-  --primary-foreground: oklch(14% 0.02 250deg);
-  --secondary: oklch(22% 0.02 250deg);
-  --secondary-foreground: oklch(96% 0.005 240deg);
-  --muted: oklch(22% 0.02 250deg);
-  --muted-foreground: oklch(65% 0.03 250deg);
-  --accent: oklch(22% 0.02 250deg);
-  --accent-foreground: oklch(96% 0.005 240deg);
-  --destructive: oklch(39.6% 0.141 25.723deg);
-  --destructive-foreground: oklch(63.7% 0.237 25.331deg);
-  --border: oklch(25% 0.02 250deg);
-  --input: oklch(25% 0.02 250deg);
-  --ring: oklch(45% 0.08 240deg);
-  --chart-1: oklch(55% 0.15 240deg);
-  --chart-2: oklch(69.6% 0.17 162.48deg);
-  --chart-3: oklch(76.9% 0.188 70.08deg);
-  --chart-4: oklch(62.7% 0.265 303.9deg);
-  --chart-5: oklch(64.5% 0.246 16.439deg);
-  --sidebar: oklch(18% 0.02 250deg);
-  --sidebar-foreground: oklch(96% 0.005 240deg);
-  --sidebar-primary: oklch(55% 0.15 240deg);
-  --sidebar-primary-foreground: oklch(96% 0.005 240deg);
-  --sidebar-accent: oklch(22% 0.02 250deg);
-  --sidebar-accent-foreground: oklch(96% 0.005 240deg);
-  --sidebar-border: oklch(25% 0.02 250deg);
-  --sidebar-ring: oklch(45% 0.08 240deg);
-  --success: oklch(28% 0.1 200deg);
-  --warning: oklch(35% 0.08 70deg);
-  --error: oklch(45% 0.1 25deg);
-  --font-heading: var(--font-playfair);
-  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-geist-mono);
-}
 
 @theme inline {
   --color-background: var(--background);

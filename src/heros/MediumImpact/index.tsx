@@ -64,7 +64,7 @@ export const MediumImpactHero: React.FC<MediumImpactHeroProps> = ({
       )}
 
       {/* Content */}
-      <div className="container z-10 relative pb-14 pt-36">
+      <div className="container z-10 relative pb-14 pt-36"> 
         <HeroContent
           breadcrumbs={breadcrumbs}
           eyebrow={eyebrow}

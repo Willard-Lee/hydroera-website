@@ -73,23 +73,23 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
   }
 
   return (
-    <article className="pt-16 pb-24">
+    <article className="pt-32 pb-24">
       {draft && <LivePreviewListener />}
 
       <div className="container">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
           <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
-          <span>/</span>
+          <span className="text-muted-foreground/50">/</span>
           <Link href="/products" className="hover:text-foreground transition-colors">Products</Link>
           {category && (
             <>
-              <span>/</span>
+              <span className="text-muted-foreground/50">/</span>
               <span className="text-muted-foreground">{category.title}</span>
             </>
           )}
-          <span>/</span>
-          <span className="text-foreground">{product.title}</span>
+          <span className="text-muted-foreground/50">/</span>
+          <span className="text-foreground font-medium">{product.title}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">

@@ -41,7 +41,7 @@ export const MobileNav: React.FC<{ data: HeaderType; isTransparent?: boolean }> 
         className={`p-2 rounded-md transition-colors ${
           isTransparent
             ? 'text-white hover:bg-white/10'
-            : 'text-foreground hover:bg-black/5 dark:hover:bg-white/10'
+            : 'text-foreground hover:bg-black/5'
         }`}
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={isOpen}
@@ -51,7 +51,7 @@ export const MobileNav: React.FC<{ data: HeaderType; isTransparent?: boolean }> 
 
       {/* Full-screen overlay */}
       {isOpen && (
-        <div className="fixed inset-0 top-0 z-40 bg-white dark:bg-hydroera-slate-dark">
+        <div className="fixed inset-0 top-0 z-40 bg-white">
           <div className="container pt-24 pb-8">
             <nav className="flex flex-col gap-1">
               {navItems.map(({ link }, i) => (
