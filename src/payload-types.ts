@@ -478,16 +478,28 @@ export interface Product {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Technical specifications — use tables for spec sheets, insert images for performance curves.
+   */
   specifications?: {
-    /**
-     * Primary material of the product body.
-     */
-    material?: string | null;
-    /**
-     * Overall dimensions (L x W x H).
-     */
-    dimensions?: string | null;
-  };
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Upload the product data sheet PDF for download on the frontend.
+   */
+  dataSheet?: (number | null) | Media;
   /**
    * Manually select related products or leave empty to auto-populate by category via frontend logic.
    */
@@ -2609,12 +2621,8 @@ export interface ProductsSelect<T extends boolean = true> {
         id?: T;
       };
   description?: T;
-  specifications?:
-    | T
-    | {
-        material?: T;
-        dimensions?: T;
-      };
+  specifications?: T;
+  dataSheet?: T;
   relatedProducts?: T;
   meta?:
     | T

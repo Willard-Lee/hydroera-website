@@ -18,7 +18,7 @@
   h6 {
     font-weight: unset;
     font-size: unset;
-    font-family: var(--font-heading), serif;
+    font-family: var(--font-heading), sans-serif;
   }
 
   html {
@@ -83,7 +83,7 @@
   --breakpoint-2xl: 86rem;
   --font-mono: var(--font-inter);
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
-  --font-serif: var(--font-playfair);
+  --font-serif: var(--font-jakarta);
 
   /* HydroEra Industrial Color Palette */
   --color-hydroera-blue: #165DFB;

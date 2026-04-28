@@ -16,7 +16,7 @@ import {
     OverviewField,
     PreviewField,
   } from '@payloadcms/plugin-seo/fields' 
-import { HorizontalRuleFeature, FixedToolbarFeature, HeadingFeature, BlocksFeature, InlineToolbarFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
+import { HorizontalRuleFeature, FixedToolbarFeature, HeadingFeature, BlocksFeature, InlineToolbarFeature, EXPERIMENTAL_TableFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
 import { CallToAction } from "@/blocks/CallToAction/config";
 import { Banner } from "@/blocks/Banner/config";
 import { revalidateDelete, revalidatePage } from "../Pages/hooks/revalidatePage";
@@ -152,33 +152,41 @@ export const Products: CollectionConfig<'products'> = {
             },
           ],
         },
-        // Tab 2: Specs (Placeholder for future use)
+        // Tab 2: Specs — rich text with table + media support for flexible product data
         {
           label: 'Specs',
           fields: [
             {
               name: 'specifications',
-              type: 'group',
-              fields: [
-                {
-                    name: 'material',
-                    type: 'text',
-                    admin: {
-                      placeholder: 'e.g. Cast iron, Stainless steel 316',
-                      description: 'Primary material of the product body.',
-                    },
-                },
-                {
-                    name: 'dimensions',
-                    type: 'text',
-                    admin: {
-                      placeholder: 'e.g. 450 x 300 x 280 mm',
-                      description: 'Overall dimensions (L x W x H).',
-                    },
-                },
-              ],
-            }
-          ]
+              type: 'richText',
+              label: 'Specifications',
+              admin: {
+                description: 'Technical specifications — use tables for spec sheets, insert images for performance curves.',
+              },
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => [
+                  ...rootFeatures,
+                  HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+                  FixedToolbarFeature(),
+                  InlineToolbarFeature(),
+                  HorizontalRuleFeature(),
+                  EXPERIMENTAL_TableFeature(),
+                  BlocksFeature({
+                    blocks: [Banner, MediaBlock],
+                  }),
+                ],
+              }),
+            },
+            {
+              name: 'dataSheet',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Data Sheet (PDF)',
+              admin: {
+                description: 'Upload the product data sheet PDF for download on the frontend.',
+              },
+            },
+          ],
         },
         // Tab 3: Related Products (Manual selection or instructions)
         {
