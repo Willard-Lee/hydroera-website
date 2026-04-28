@@ -17,6 +17,7 @@ import { LogoGrid } from '@/blocks/LogoGrid/config'
 import { MediaContentAccordion } from '@/blocks/MediaContentAccordion/config'
 import { Download } from '@/blocks/Download/config'
 import { IndustriesGrid } from '@/blocks/IndustriesGrid/config'
+import { TrustBand } from '@/blocks/TrustBand/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -86,7 +87,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ServicesGrid, TestimonialsBlock, StatsCounter, FeatureSplit, ProjectsShowcase, Certifications, LogoGrid, MediaContentAccordion, Download, IndustriesGrid],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ServicesGrid, TestimonialsBlock, StatsCounter, FeatureSplit, ProjectsShowcase, Certifications, LogoGrid, MediaContentAccordion, Download, IndustriesGrid, TrustBand],
               required: true,
               admin: {
                 initCollapsed: true,

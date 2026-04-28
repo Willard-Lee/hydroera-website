@@ -174,7 +174,7 @@
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);
-  --font-heading: var(--font-playfair);
+  --font-heading: var(--font-jakarta);
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono);
 }

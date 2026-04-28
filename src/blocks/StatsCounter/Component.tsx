@@ -275,8 +275,8 @@ export const StatsCounterBlock: React.FC<StatsCounterBlockProps> = ({
                   {/* Divider line */}
                   <div
                     className={cn(
-                      'w-10 h-0.5 mx-auto mt-4 mb-3 rounded-full',
-                      isDark ? 'bg-white/20' : 'bg-hydroera-blue/20',
+                      'w-8 h-0.5 mx-auto mt-4 mb-3 rounded-full',
+                      isDark ? 'bg-hydroera-blue' : 'bg-hydroera-blue/30',
                     )}
                   />
 

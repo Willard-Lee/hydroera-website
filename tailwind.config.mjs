@@ -2,6 +2,15 @@
 const config = {
   theme: {
     extend: {
+      animation: {
+        marquee: 'marquee 30s linear infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
       typography: () => ({
         DEFAULT: {
           css: [
@@ -11,16 +20,16 @@ const config = {
               h1: {
                 fontWeight: '700',
                 marginBottom: '0.25em',
-                fontFamily: 'var(--font-heading), serif',
+                fontFamily: 'var(--font-heading), sans-serif',
               },
               h2: {
-                fontFamily: 'var(--font-heading), serif',
+                fontFamily: 'var(--font-heading), sans-serif',
               },
               h3: {
-                fontFamily: 'var(--font-heading), serif',
+                fontFamily: 'var(--font-heading), sans-serif',
               },
               h4: {
-                fontFamily: 'var(--font-heading), serif',
+                fontFamily: 'var(--font-heading), sans-serif',
               },
             },
           ],

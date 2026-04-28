@@ -17,6 +17,7 @@ import { LogoGridBlock } from './LogoGrid/Component'
 import { MediaContentAccordionBlock } from './MediaContentAccordion/Component'
 import { DownloadBlock } from './Download/Component'
 import { IndustriesGridBlock } from './IndustriesGrid/Component'
+import { TrustBandBlock } from './TrustBand/Component'
 import { ScrollReveal } from '@/components/ScrollReveal'
 
 type Animation = 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'zoom-in' | 'fade'
@@ -37,6 +38,7 @@ const blockComponents = {
   mediaContentAccordion: MediaContentAccordionBlock,
   download: DownloadBlock,
   industriesGrid: IndustriesGridBlock,
+  trustBand: TrustBandBlock,
 }
 
 const animations: Animation[] = ['fade-up', 'fade-up', 'zoom-in', 'fade-left', 'fade-right', 'fade-up']

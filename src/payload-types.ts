@@ -247,6 +247,7 @@ export interface Page {
     | MediaContentAccordionBlock
     | DownloadBlock
     | IndustriesGridBlock
+    | TrustBandBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1648,6 +1649,63 @@ export interface IndustriesGridBlock {
   blockType: 'industriesGrid';
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TrustBandBlock".
+ */
+export interface TrustBandBlock {
+  /**
+   * Small label above stats (e.g. "WHY CHOOSE US")
+   */
+  eyebrow?: string | null;
+  /**
+   * Section heading (e.g. "Trusted Across Malaysia")
+   */
+  heading?: string | null;
+  /**
+   * Key numbers that build credibility (e.g. years, projects, clients)
+   */
+  stats: {
+    /**
+     * The number (e.g. 25, 500)
+     */
+    value: number;
+    /**
+     * After the number (e.g. "+", "%", " years")
+     */
+    suffix?: string | null;
+    /**
+     * Before the number (e.g. ">", "$")
+     */
+    prefix?: string | null;
+    /**
+     * Description (e.g. "Years of Experience")
+     */
+    label: string;
+    id?: string | null;
+  }[];
+  showLogos?: boolean | null;
+  /**
+   * Label above the logo strip
+   */
+  logosLabel?: string | null;
+  logos?:
+    | {
+        /**
+         * Logo image — transparent PNG, white version recommended for dark background.
+         */
+        logo: number | Media;
+        /**
+         * Brand name (alt text)
+         */
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'trustBand';
+}
+/**
  * Manage job listings shown on the Careers page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2091,6 +2149,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaContentAccordion?: T | MediaContentAccordionBlockSelect<T>;
         download?: T | DownloadBlockSelect<T>;
         industriesGrid?: T | IndustriesGridBlockSelect<T>;
+        trustBand?: T | TrustBandBlockSelect<T>;
       };
   meta?:
     | T
@@ -2427,6 +2486,34 @@ export interface IndustriesGridBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TrustBandBlock_select".
+ */
+export interface TrustBandBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        suffix?: T;
+        prefix?: T;
+        label?: T;
+        id?: T;
+      };
+  showLogos?: T;
+  logosLabel?: T;
+  logos?:
+    | T
+    | {
+        logo?: T;
+        name?: T;
         id?: T;
       };
   id?: T;
