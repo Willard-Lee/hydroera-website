@@ -128,7 +128,7 @@ export const HighImpactHero: React.FC<HighImpactHeroProps> = ({
       <div
         className="absolute inset-0 -z-10"
         style={{
-          background: `linear-gradient(${direction}, rgba(11,17,32,${Math.min(opacity + 0.15, 1)}) 0%, rgba(11,17,32,${opacity}) 45%, rgba(11,17,32,${opacity * 0.4}) 100%)`,
+          background: `linear-gradient(${direction}, rgba(15,23,42,${Math.min(opacity + 0.15, 1)}) 0%, rgba(15,23,42,${opacity}) 45%, rgba(15,23,42,${opacity * 0.4}) 100%)`,
         }}
       />
 

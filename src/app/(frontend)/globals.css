@@ -72,6 +72,9 @@
 @source inline("bg-black/100");
 @source inline("from-hydroera-blue");
 @source inline("to-hydroera-cyan");
+@source inline("from-hydroera-dark-from");
+@source inline("via-hydroera-dark-via");
+@source inline("to-hydroera-dark-to");
 @source inline("bg-gradient-to-r");
 @source inline("bg-gradient-to-br");
 
@@ -85,16 +88,21 @@
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-serif: var(--font-jakarta);
 
-  /* HydroEra Industrial Color Palette */
-  --color-hydroera-blue: #165DFB;
-  --color-hydroera-blue-dark: #1248C8;  /* darker shade for hover */
-  --color-hydroera-blue-light: #3B82F6; /* blue-500 */
+  /* HydroEra Industrial Color Palette — Deep Navy + Electric Blue */
+  --color-hydroera-blue: #0B4F8A;       /* primary — deep navy blue */
+  --color-hydroera-blue-dark: #083D6B;  /* darker shade for hover */
+  --color-hydroera-blue-light: #2196F3; /* electric blue accent */
   --color-hydroera-cyan: #0090bc;
-  --color-hydroera-slate: #475569;
-  --color-hydroera-slate-dark: #1E293B;
-  --color-hydroera-slate-light: #94A3B8;
+  --color-hydroera-slate: #475569;      /* slate-600 */
+  --color-hydroera-slate-dark: #0F172A; /* slate-900 */
+  --color-hydroera-slate-light: #64748B;/* slate-500 muted text */
   --color-hydroera-border: #CBD5E1;
   --color-hydroera-accent: #E2EAF4;
+
+  /* Dark section gradient stops — use these in all dark bg blocks */
+  --color-hydroera-dark-from: #0F172A;
+  --color-hydroera-dark-via: #162032;
+  --color-hydroera-dark-to: #1E3A5F;
 }
 
 @layer utilities {
@@ -136,41 +144,41 @@
   }
 }
 
-/* HydroEra Light Theme — primary: #155dfc, accent gradient: #155dfc → #0090bc */
+/* HydroEra Light Theme — Deep Navy + Electric Blue */
 :root {
-  --background: oklch(98.5% 0.002 240deg);
-  --foreground: oklch(16% 0.02 250deg);
-  --card: oklch(100% 0 0deg);
-  --card-foreground: oklch(16% 0.02 250deg);
-  --popover: oklch(100% 0 0deg);
-  --popover-foreground: oklch(16% 0.02 250deg);
-  --primary: #165DFB;
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --card: #ffffff;
+  --card-foreground: #0F172A;
+  --popover: #ffffff;
+  --popover-foreground: #0F172A;
+  --primary: #0B4F8A;
   --primary-foreground: #ffffff;
-  --secondary: oklch(95% 0.01 240deg);
-  --secondary-foreground: oklch(25% 0.03 250deg);
-  --muted: oklch(95% 0.01 240deg);
-  --muted-foreground: oklch(50% 0.02 250deg);
-  --accent: oklch(93% 0.02 240deg);
-  --accent-foreground: oklch(25% 0.03 250deg);
+  --secondary: #F1F5F9;
+  --secondary-foreground: #1E293B;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+  --accent: #E2EAF4;
+  --accent-foreground: #1E293B;
   --destructive: oklch(57.7% 0.245 27.325deg);
   --destructive-foreground: oklch(57.7% 0.245 27.325deg);
-  --border: oklch(90% 0.01 240deg);
-  --input: oklch(90% 0.01 240deg);
-  --ring: #165DFB;
-  --chart-1: #165DFB;
-  --chart-2: #0090bc;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #0B4F8A;
+  --chart-1: #0B4F8A;
+  --chart-2: #2196F3;
   --chart-3: oklch(39.8% 0.07 227.392deg);
   --chart-4: oklch(82.8% 0.189 84.429deg);
   --chart-5: oklch(76.9% 0.188 70.08deg);
   --radius: 0.5rem;
-  --sidebar: oklch(98.5% 0.002 240deg);
-  --sidebar-foreground: oklch(16% 0.02 250deg);
-  --sidebar-primary: #165DFB;
+  --sidebar: #F8FAFC;
+  --sidebar-foreground: #0F172A;
+  --sidebar-primary: #0B4F8A;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: oklch(95% 0.01 240deg);
-  --sidebar-accent-foreground: oklch(25% 0.03 250deg);
-  --sidebar-border: oklch(90% 0.01 240deg);
-  --sidebar-ring: #155dfc;
+  --sidebar-accent: #F1F5F9;
+  --sidebar-accent-foreground: #1E293B;
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: #0B4F8A;
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);

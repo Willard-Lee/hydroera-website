@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { cn } from '@/utilities/ui'
 import { ArrowRight } from 'lucide-react'
@@ -21,28 +21,13 @@ const sectorLabels: Record<string, string> = {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Bento project card                                                 */
+/*  Scroll card                                                        */
 /* ------------------------------------------------------------------ */
-const BentoCard: React.FC<{
-  project: Project
-  large?: boolean
-}> = ({ project, large }) => {
-  const statusLabel =
-    project.projectStatus === 'completed'
-      ? 'Completed'
-      : project.projectStatus === 'in-progress'
-        ? 'In Progress'
-        : project.projectStatus === 'upcoming'
-          ? 'Upcoming'
-          : null
-
+const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className={cn(
-        'group relative block overflow-hidden rounded-xl',
-        large ? 'h-full min-h-[400px]' : 'h-full min-h-[200px]',
-      )}
+      className="group relative block w-72 md:w-80 shrink-0 aspect-[4/3] overflow-hidden rounded-xl"
     >
       {/* Background image */}
       {project.featuredImage && typeof project.featuredImage === 'object' && (
@@ -54,30 +39,12 @@ const BentoCard: React.FC<{
       )}
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-opacity duration-500 group-hover:from-black/90 group-hover:via-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
-      {/* Status badge */}
-      {statusLabel && (
-        <div className="absolute top-3 left-3 z-10">
-          <span
-            className={cn(
-              'inline-block px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md',
-              project.projectStatus === 'completed'
-                ? 'bg-emerald-500 text-white'
-                : project.projectStatus === 'in-progress'
-                  ? 'bg-amber-500 text-white'
-                  : 'bg-blue-500 text-white',
-            )}
-          >
-            {statusLabel}
-          </span>
-        </div>
-      )}
-
-      {/* Content overlay */}
-      <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-6 z-10">
+      {/* Content */}
+      <div className="absolute inset-0 flex flex-col justify-end p-5 z-10">
         {/* Sector + Location */}
-        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5">
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1">
           {project.sector && (
             <span>{sectorLabels[project.sector] || project.sector}</span>
           )}
@@ -86,25 +53,9 @@ const BentoCard: React.FC<{
         </div>
 
         {/* Title */}
-        <h3
-          className={cn(
-            'font-bold text-white leading-tight',
-            large ? 'text-xl md:text-2xl' : 'text-base md:text-lg',
-          )}
-        >
+        <h3 className="text-base font-bold text-white leading-tight line-clamp-2">
           {project.title}
         </h3>
-
-        {/* Summary — only on large card */}
-        {large && project.summary && (
-          <p className="text-sm text-white/60 mt-1.5 line-clamp-2">{project.summary}</p>
-        )}
-
-        {/* View project link */}
-        <div className="flex items-center text-sm font-medium text-hydroera-blue mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span>View Project</span>
-          <ArrowRight className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300" />
-        </div>
       </div>
     </Link>
   )
@@ -128,81 +79,89 @@ export const ProjectsShowcaseClient: React.FC<{
   enableViewAll,
   viewAllLink,
 }) => {
-  const [first, ...rest] = projects
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const cardWidth = 320 + 16 // w-80 + gap
+
+  const updateActiveIndex = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const index = Math.round(el.scrollLeft / cardWidth)
+    setActiveIndex(Math.min(index, projects.length - 1))
+  }, [cardWidth, projects.length])
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    el.addEventListener('scroll', updateActiveIndex, { passive: true })
+    return () => el.removeEventListener('scroll', updateActiveIndex)
+  }, [updateActiveIndex])
+
+  const scrollToIndex = (index: number) => {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollTo({ left: index * cardWidth, behavior: 'smooth' })
+  }
 
   return (
-    <section className="bg-hydroera-slate-dark text-white py-16 md:py-20 rounded-2xl">
-      <div className="container">
-        {/* Header row */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-          <div className="max-w-xl">
-            {eyebrow && (
-              <p className="text-sm font-bold uppercase tracking-[0.15em] text-hydroera-blue mb-2">
-                {eyebrow}
-              </p>
-            )}
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-              {heading}
-            </h2>
-            {description && (
-              <p className="mt-3 text-white/60 leading-relaxed">
-                {description}
-              </p>
-            )}
-          </div>
-
-          {/* View all link — desktop */}
-          {enableViewAll && viewAllLink && (
-            <div className="hidden md:block shrink-0">
-              <CMSLink
-                {...viewAllLink}
-                appearance="default"
-                size="default"
-              />
-            </div>
+    <section className="py-16 md:py-20">
+      {/* Header */}
+      <div className="container mb-10">
+        <div className="max-w-2xl">
+          {eyebrow && (
+            <p className="text-sm font-bold uppercase tracking-[0.15em] text-hydroera-blue mb-2">
+              {eyebrow}
+            </p>
+          )}
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+            {heading}
+          </h2>
+          {description && (
+            <p className="mt-3 text-muted-foreground leading-relaxed">
+              {description}
+            </p>
           )}
         </div>
+      </div>
 
-        {/* Bento grid */}
-        {projects.length === 1 ? (
-          <BentoCard project={first} large />
-        ) : projects.length === 2 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <BentoCard project={first} large />
-            <BentoCard project={rest[0]} />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Left — large card */}
-            <BentoCard project={first} large />
+      {/* Scrollable row — bleeds to right */}
+      <div
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto pl-4 md:pl-8 lg:pl-[max(2rem,calc((100vw-1376px)/2+2rem))] pr-4 scrollbar-hide scroll-smooth"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {projects.map((project, i) => (
+          <ProjectCard key={project.id || i} project={project} />
+        ))}
+      </div>
 
-            {/* Right — stacked cards */}
-            <div className="grid grid-rows-2 gap-4">
-              {rest.slice(0, 2).map((project, i) => (
-                <BentoCard key={project.id || i} project={project} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Extra projects beyond 3 — standard row */}
-        {rest.length > 2 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            {rest.slice(2).map((project, i) => (
-              <BentoCard key={project.id || i} project={project} />
-            ))}
-          </div>
-        )}
-
-        {/* View all link — mobile */}
-        {enableViewAll && viewAllLink && (
-          <div className="md:hidden mt-8 text-center">
-            <CMSLink
-              {...viewAllLink}
-              appearance="default"
-              size="default"
+      {/* Bottom bar — dots + explore link */}
+      <div className="container mt-8 flex items-center justify-between">
+        {/* Dash indicators */}
+        <div className="flex items-center gap-1.5">
+          {projects.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => scrollToIndex(i)}
+              className={cn(
+                'h-1 rounded-full transition-all duration-300',
+                i === activeIndex
+                  ? 'w-8 bg-hydroera-blue'
+                  : 'w-4 bg-foreground/20 hover:bg-foreground/40',
+              )}
+              aria-label={`Go to project ${i + 1}`}
             />
-          </div>
+          ))}
+        </div>
+
+        {/* Explore all link */}
+        {enableViewAll && viewAllLink && (
+          <CMSLink
+            {...viewAllLink}
+            appearance="default"
+            size="default"
+            className="flex items-center gap-1 text-sm font-semibold"
+          />
         )}
       </div>
     </section>

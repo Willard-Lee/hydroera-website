@@ -59,14 +59,14 @@ export const PageHero: React.FC<PageHeroProps> = ({
         className="absolute inset-0 -z-10"
         style={{
           background: media
-            ? `linear-gradient(${direction}, rgba(11,17,32,${Math.min(opacity + 0.15, 1)}) 0%, rgba(11,17,32,${opacity}) 45%, rgba(11,17,32,${opacity * 0.4}) 100%)`
+            ? `linear-gradient(${direction}, rgba(15,23,42,${Math.min(opacity + 0.15, 1)}) 0%, rgba(15,23,42,${opacity}) 45%, rgba(15,23,42,${opacity * 0.4}) 100%)`
             : undefined,
         }}
       />
 
       {/* Fallback solid background when no image */}
       {(!media || typeof media !== 'object') && (
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0b1120] via-[#0f1d3a] to-[#162449]" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-hydroera-dark-from via-hydroera-dark-via to-hydroera-dark-to" />
       )}
 
       {/* Content */}

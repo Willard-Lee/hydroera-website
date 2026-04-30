@@ -74,7 +74,7 @@ export default async function CareerDetailPage({ params: paramsPromise }: Args) 
       {draft && <LivePreviewListener />}
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#0b1120] via-[#0f1d3a] to-[#162449] text-white" data-theme="dark">
+      <div className="bg-gradient-to-r from-hydroera-dark-from via-hydroera-dark-via to-hydroera-dark-to text-white" data-theme="dark">
         <div className="container pt-32 pb-12">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-white/50 mb-6">

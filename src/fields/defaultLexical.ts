@@ -41,8 +41,8 @@ export const defaultLexical = lexicalEditor({
       state: {
         color: {
           white: { label: 'White', css: { color: '#ffffff' } },
-          blue: { label: 'Blue', css: { color: '#165DFB' } },
-          'light-blue': { label: 'Light Blue', css: { color: '#3B82F6' } },
+          blue: { label: 'Blue', css: { color: '#0B4F8A' } },
+          'light-blue': { label: 'Light Blue', css: { color: '#2196F3' } },
           cyan: { label: 'Cyan', css: { color: '#06B6D4' } },
           green: { label: 'Green', css: { color: '#22C55E' } },
           yellow: { label: 'Yellow', css: { color: '#EAB308' } },

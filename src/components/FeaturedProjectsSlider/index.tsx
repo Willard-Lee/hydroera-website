@@ -54,7 +54,7 @@ export const FeaturedProjectsSlider: React.FC<FeaturedProjectsSliderProps> = ({ 
         ))}
 
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0b1120]/95 via-[#0b1120]/70 to-[#0b1120]/40 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-hydroera-dark-from/95 via-hydroera-dark-from/70 to-hydroera-dark-from/40 z-10" />
 
         {/* Content */}
         <div className="container relative z-20 pb-12 pt-32">

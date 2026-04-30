@@ -192,7 +192,7 @@ export const StatsCounterBlock: React.FC<StatsCounterBlockProps> = ({
       className={cn('py-16 md:py-20', {
         'bg-hydroera-blue-dark text-white': theme === 'dark',
         'bg-hydroera-slate-dark text-white': theme === 'slate',
-        'bg-gradient-to-br from-[#0b1120] via-[#0f1d3a] to-[#1a3564] text-white': theme === 'gradient',
+        'bg-gradient-to-br from-hydroera-dark-from via-hydroera-dark-via to-hydroera-dark-to text-white': theme === 'gradient',
         'bg-secondary': theme === 'light',
       })}
     >

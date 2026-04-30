@@ -8,7 +8,7 @@ import { cn } from '@/utilities/ui'
 
 const bgClasses: Record<string, string> = {
   dark: 'bg-hydroera-slate-dark text-white',
-  gradient: 'bg-gradient-to-br from-[#0b1120] via-[#0f1d3a] to-[#1a3564] text-white',
+  gradient: 'bg-gradient-to-br from-hydroera-dark-from via-hydroera-dark-via to-hydroera-dark-to text-white',
   blue: 'bg-hydroera-blue text-white',
   light: 'bg-secondary text-foreground',
 }
