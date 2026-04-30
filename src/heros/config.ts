@@ -142,6 +142,51 @@ export const hero: Field = {
       relationTo: 'media',
       required: true,
     },
+    {
+      name: 'showStats',
+      type: 'checkbox',
+      label: 'Show stats in hero',
+      defaultValue: false,
+      admin: {
+        description: 'Display key numbers (e.g. years of experience, projects) inside the hero section',
+        condition: (_, { type } = {}) => type === 'highImpact',
+      },
+    },
+    {
+      name: 'heroStats',
+      type: 'array',
+      label: 'Hero Statistics',
+      minRows: 2,
+      maxRows: 4,
+      admin: {
+        initCollapsed: true,
+        condition: (_, { type, showStats } = {}) => type === 'highImpact' && Boolean(showStats),
+      },
+      fields: [
+        {
+          name: 'value',
+          type: 'number',
+          required: true,
+          admin: { description: 'The number (e.g. 25, 500)', step: 1 },
+        },
+        {
+          name: 'suffix',
+          type: 'text',
+          admin: { description: 'After the number (e.g. "+", "%")' },
+        },
+        {
+          name: 'prefix',
+          type: 'text',
+          admin: { description: 'Before the number (e.g. ">", "$")' },
+        },
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+          admin: { description: 'Description (e.g. "Years of Experience")' },
+        },
+      ],
+    },
   ],
   label: false,
 }

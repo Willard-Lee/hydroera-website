@@ -43,9 +43,18 @@ export const IndustriesGrid: Block = {
         components: {
           RowLabel: '@/blocks/IndustriesGrid/RowLabel#IndustriesGridRowLabel',
         },
-        description: 'Add industry cards to display in the grid',
+        description: 'Add industry cards with photos to display in the grid',
       },
       fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+          admin: {
+            description: 'Background photo for this industry card',
+          },
+        },
         {
           name: 'icon',
           type: 'select',

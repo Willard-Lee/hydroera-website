@@ -14,6 +14,20 @@ export const CallToAction: Block = {
   interfaceName: 'CallToActionBlock',
   fields: [
     {
+      name: 'background',
+      type: 'select',
+      defaultValue: 'dark',
+      options: [
+        { label: 'Dark', value: 'dark' },
+        { label: 'Dark Gradient', value: 'gradient' },
+        { label: 'Blue', value: 'blue' },
+        { label: 'Light', value: 'light' },
+      ],
+      admin: {
+        description: 'Background style for the CTA section',
+      },
+    },
+    {
       name: 'richText',
       type: 'richText',
       editor: lexicalEditor({

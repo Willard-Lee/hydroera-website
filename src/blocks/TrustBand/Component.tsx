@@ -1,155 +1,89 @@
 'use client'
 
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React from 'react'
 import { cn } from '@/utilities/ui'
 import { Media } from '@/components/Media'
 import type { TrustBandBlock as TrustBandBlockProps } from '@/payload-types'
 
-/* ── Animated counter ── */
-const AnimatedNumber: React.FC<{
-  value: number
-  prefix?: string | null
-  suffix?: string | null
-}> = ({ value, prefix, suffix }) => {
-  const [display, setDisplay] = useState(0)
-  const [hasAnimated, setHasAnimated] = useState(false)
-  const ref = useRef<HTMLSpanElement>(null)
-
-  const animate = useCallback(() => {
-    if (hasAnimated) return
-    setHasAnimated(true)
-
-    const duration = 2000
-    const steps = 60
-    const stepTime = duration / steps
-    let current = 0
-
-    const timer = setInterval(() => {
-      current++
-      const progress = current / steps
-      const eased = 1 - (1 - progress) * (1 - progress)
-      setDisplay(Math.round(eased * value))
-
-      if (current >= steps) {
-        clearInterval(timer)
-        setDisplay(value)
-      }
-    }, stepTime)
-  }, [value, hasAnimated])
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          animate()
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.3 },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [animate])
-
-  return (
-    <span ref={ref}>
-      {prefix || ''}
-      {display.toLocaleString()}
-      {suffix || ''}
-    </span>
-  )
+const bgClasses: Record<string, string> = {
+  white: 'bg-white',
+  gray: 'bg-gray-50',
+  dark: 'bg-hydroera-slate-dark',
+  gradient: 'bg-gradient-to-br from-[#0b1120] via-[#0f1d3a] to-[#1a3564]',
 }
 
-/* ── Main component ── */
 export const TrustBandBlock: React.FC<TrustBandBlockProps & { id?: string }> = (props) => {
-  const { id, eyebrow, heading, stats, showLogos, logosLabel, logos } = props
+  const { id, label, background, logos } = props
 
-  if (!stats || stats.length === 0) return null
+  if (!logos || logos.length === 0) return null
+
+  const bg = background || 'white'
+  const isDark = bg === 'dark' || bg === 'gradient'
 
   return (
     <section
-      className="bg-gradient-to-br from-[#0b1120] via-[#0f1d3a] to-[#1a3564] text-white"
+      className={cn('py-10 md:py-14', bgClasses[bg])}
       id={id ? `block-${id}` : undefined}
     >
-      {/* Stats section */}
-      <div className="container py-16 md:py-20">
-        {/* Header */}
-        {(eyebrow || heading) && (
-          <div className="text-center mb-12">
-            {eyebrow && (
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-3">
-                {eyebrow}
-              </p>
+      <div className="container">
+        {label && (
+          <p
+            className={cn(
+              'text-xs font-bold uppercase tracking-[0.2em] text-center mb-8',
+              isDark ? 'text-white/30' : 'text-muted-foreground/50',
             )}
-            {heading && (
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{heading}</h2>
-            )}
-          </div>
+          >
+            {label}
+          </p>
         )}
 
-        {/* Stats grid */}
-        <div
-          className={cn('grid gap-8 md:gap-12', {
-            'grid-cols-2': stats.length === 2,
-            'grid-cols-2 lg:grid-cols-3': stats.length === 3,
-            'grid-cols-2 lg:grid-cols-4': stats.length >= 4,
-          })}
-        >
-          {stats.map((stat, index) => (
-            <div key={stat.id || index} className="text-center">
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
-                <AnimatedNumber
-                  value={stat.value}
-                  prefix={stat.prefix}
-                  suffix={stat.suffix}
-                />
-              </div>
-              <div className="w-8 h-0.5 mx-auto mt-4 mb-3 rounded-full bg-hydroera-blue" />
-              <p className="text-sm text-white/50 font-medium">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Logo ribbon */}
-      {showLogos && logos && logos.length > 0 && (
-        <div className="border-t border-white/10">
-          <div className="container py-8 md:py-10">
-            {logosLabel && (
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/30 text-center mb-6">
-                {logosLabel}
-              </p>
+        {/* Scrolling marquee */}
+        <div className="relative overflow-hidden">
+          {/* Fade edges */}
+          <div
+            className={cn(
+              'absolute left-0 top-0 bottom-0 w-16 md:w-24 z-10 pointer-events-none',
+              isDark
+                ? 'bg-gradient-to-r from-[#0f1d3a] to-transparent'
+                : bg === 'gray'
+                  ? 'bg-gradient-to-r from-gray-50 to-transparent'
+                  : 'bg-gradient-to-r from-white to-transparent',
             )}
+          />
+          <div
+            className={cn(
+              'absolute right-0 top-0 bottom-0 w-16 md:w-24 z-10 pointer-events-none',
+              isDark
+                ? 'bg-gradient-to-l from-[#1a3564] to-transparent'
+                : bg === 'gray'
+                  ? 'bg-gradient-to-l from-gray-50 to-transparent'
+                  : 'bg-gradient-to-l from-white to-transparent',
+            )}
+          />
 
-            {/* Scrolling marquee */}
-            <div className="relative overflow-hidden">
-              <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-r from-[#0f1d3a] to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-l from-[#1a3564] to-transparent z-10 pointer-events-none" />
-
-              <div className="flex animate-marquee gap-10 md:gap-14 items-center w-max">
-                {[...logos, ...logos].map((item, i) => (
-                  <div
-                    key={`${item.id || i}-${i}`}
-                    className="shrink-0 flex items-center justify-center h-10 md:h-12"
-                    title={item.name}
-                  >
-                    {item.logo && typeof item.logo === 'object' && (
-                      <Media
-                        resource={item.logo}
-                        imgClassName="h-8 md:h-10 w-auto object-contain opacity-40 hover:opacity-80 transition-opacity duration-300 brightness-0 invert"
-                      />
+          <div className="flex animate-marquee gap-12 md:gap-16 items-center w-max">
+            {[...logos, ...logos].map((item, i) => (
+              <div
+                key={`${item.id || i}-${i}`}
+                className="shrink-0 flex items-center justify-center h-10 md:h-12"
+                title={item.name}
+              >
+                {item.logo && typeof item.logo === 'object' && (
+                  <Media
+                    resource={item.logo}
+                    imgClassName={cn(
+                      'h-8 md:h-10 w-auto object-contain transition-all duration-300',
+                      isDark
+                        ? 'brightness-0 invert opacity-30 hover:opacity-100 hover:invert-0 hover:brightness-100'
+                        : 'grayscale opacity-40 hover:grayscale-0 hover:opacity-100',
                     )}
-                  </div>
-                ))}
+                  />
+                )}
               </div>
-            </div>
+            ))}
           </div>
         </div>
-      )}
+      </div>
     </section>
   )
 }

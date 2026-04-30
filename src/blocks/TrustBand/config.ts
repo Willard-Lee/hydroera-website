@@ -9,78 +9,36 @@ export const TrustBand: Block = {
   },
   fields: [
     {
-      name: 'eyebrow',
-      type: 'text',
-      admin: {
-        description: 'Small label above stats (e.g. "WHY CHOOSE US")',
-      },
-    },
-    {
-      name: 'heading',
-      type: 'text',
-      admin: {
-        description: 'Section heading (e.g. "Trusted Across Malaysia")',
-      },
-    },
-    {
-      name: 'stats',
-      type: 'array',
-      label: 'Statistics',
-      minRows: 2,
-      maxRows: 4,
-      required: true,
-      admin: {
-        initCollapsed: true,
-        description: 'Key numbers that build credibility (e.g. years, projects, clients)',
-      },
-      fields: [
-        {
-          name: 'value',
-          type: 'number',
-          required: true,
-          admin: { description: 'The number (e.g. 25, 500)', step: 1 },
-        },
-        {
-          name: 'suffix',
-          type: 'text',
-          admin: { description: 'After the number (e.g. "+", "%", " years")', width: '50%' },
-        },
-        {
-          name: 'prefix',
-          type: 'text',
-          admin: { description: 'Before the number (e.g. ">", "$")', width: '50%' },
-        },
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-          admin: { description: 'Description (e.g. "Years of Experience")' },
-        },
-      ],
-    },
-    {
-      name: 'showLogos',
-      type: 'checkbox',
-      label: 'Show partner logos below stats',
-      defaultValue: true,
-    },
-    {
-      name: 'logosLabel',
+      name: 'label',
       type: 'text',
       defaultValue: 'Trusted by leading brands',
       admin: {
-        description: 'Label above the logo strip',
-        condition: (_data, siblingData) => Boolean(siblingData?.showLogos),
+        description: 'Text displayed above the logos (e.g. "Trusted by", "Our Partners")',
+      },
+    },
+    {
+      name: 'background',
+      type: 'select',
+      defaultValue: 'white',
+      options: [
+        { label: 'White', value: 'white' },
+        { label: 'Light Gray', value: 'gray' },
+        { label: 'Dark', value: 'dark' },
+        { label: 'Dark Gradient', value: 'gradient' },
+      ],
+      admin: {
+        description: 'Background color of the trust band section',
       },
     },
     {
       name: 'logos',
       type: 'array',
+      label: 'Logos',
       minRows: 1,
       maxRows: 20,
+      required: true,
       admin: {
         initCollapsed: true,
-        condition: (_data, siblingData) => Boolean(siblingData?.showLogos),
       },
       fields: [
         {
@@ -88,13 +46,13 @@ export const TrustBand: Block = {
           type: 'upload',
           relationTo: 'media',
           required: true,
-          admin: { description: 'Logo image — transparent PNG, white version recommended for dark background.' },
+          admin: { description: 'Company logo — transparent PNG recommended' },
         },
         {
           name: 'name',
           type: 'text',
           required: true,
-          admin: { description: 'Brand name (alt text)' },
+          admin: { description: 'Company name (used for alt text and hover tooltip)' },
         },
       ],
     },

@@ -230,6 +230,31 @@ export interface Page {
         }[]
       | null;
     media?: (number | null) | Media;
+    /**
+     * Display key numbers (e.g. years of experience, projects) inside the hero section
+     */
+    showStats?: boolean | null;
+    heroStats?:
+      | {
+          /**
+           * The number (e.g. 25, 500)
+           */
+          value: number;
+          /**
+           * After the number (e.g. "+", "%")
+           */
+          suffix?: string | null;
+          /**
+           * Before the number (e.g. ">", "$")
+           */
+          prefix?: string | null;
+          /**
+           * Description (e.g. "Years of Experience")
+           */
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
   };
   layout: (
     | CallToActionBlock
@@ -585,6 +610,10 @@ export interface User {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
+  /**
+   * Background style for the CTA section
+   */
+  background?: ('dark' | 'gradient' | 'blue' | 'light') | null;
   richText?: {
     root: {
       type: string;
@@ -1615,10 +1644,14 @@ export interface IndustriesGridBlock {
    */
   subheading?: string | null;
   /**
-   * Add industry cards to display in the grid
+   * Add industry cards with photos to display in the grid
    */
   industries?:
     | {
+        /**
+         * Background photo for this industry card
+         */
+        image: number | Media;
         /**
          * Choose an icon that represents this industry
          */
@@ -1654,53 +1687,24 @@ export interface IndustriesGridBlock {
  */
 export interface TrustBandBlock {
   /**
-   * Small label above stats (e.g. "WHY CHOOSE US")
+   * Text displayed above the logos (e.g. "Trusted by", "Our Partners")
    */
-  eyebrow?: string | null;
+  label?: string | null;
   /**
-   * Section heading (e.g. "Trusted Across Malaysia")
+   * Background color of the trust band section
    */
-  heading?: string | null;
-  /**
-   * Key numbers that build credibility (e.g. years, projects, clients)
-   */
-  stats: {
+  background?: ('white' | 'gray' | 'dark' | 'gradient') | null;
+  logos: {
     /**
-     * The number (e.g. 25, 500)
+     * Company logo — transparent PNG recommended
      */
-    value: number;
+    logo: number | Media;
     /**
-     * After the number (e.g. "+", "%", " years")
+     * Company name (used for alt text and hover tooltip)
      */
-    suffix?: string | null;
-    /**
-     * Before the number (e.g. ">", "$")
-     */
-    prefix?: string | null;
-    /**
-     * Description (e.g. "Years of Experience")
-     */
-    label: string;
+    name: string;
     id?: string | null;
   }[];
-  showLogos?: boolean | null;
-  /**
-   * Label above the logo strip
-   */
-  logosLabel?: string | null;
-  logos?:
-    | {
-        /**
-         * Logo image — transparent PNG, white version recommended for dark background.
-         */
-        logo: number | Media;
-        /**
-         * Brand name (alt text)
-         */
-        name: string;
-        id?: string | null;
-      }[]
-    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'trustBand';
@@ -2130,6 +2134,16 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        showStats?: T;
+        heroStats?:
+          | T
+          | {
+              value?: T;
+              suffix?: T;
+              prefix?: T;
+              label?: T;
+              id?: T;
+            };
       };
   layout?:
     | T
@@ -2170,6 +2184,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
+  background?: T;
   richText?: T;
   links?:
     | T
@@ -2483,6 +2498,7 @@ export interface IndustriesGridBlockSelect<T extends boolean = true> {
   industries?:
     | T
     | {
+        image?: T;
         icon?: T;
         title?: T;
         description?: T;
@@ -2496,19 +2512,8 @@ export interface IndustriesGridBlockSelect<T extends boolean = true> {
  * via the `definition` "TrustBandBlock_select".
  */
 export interface TrustBandBlockSelect<T extends boolean = true> {
-  eyebrow?: T;
-  heading?: T;
-  stats?:
-    | T
-    | {
-        value?: T;
-        suffix?: T;
-        prefix?: T;
-        label?: T;
-        id?: T;
-      };
-  showLogos?: T;
-  logosLabel?: T;
+  label?: T;
+  background?: T;
   logos?:
     | T
     | {
