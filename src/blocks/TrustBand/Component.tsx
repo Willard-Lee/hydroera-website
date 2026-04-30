@@ -65,14 +65,14 @@ export const TrustBandBlock: React.FC<TrustBandBlockProps & { id?: string }> = (
             {[...logos, ...logos].map((item, i) => (
               <div
                 key={`${item.id || i}-${i}`}
-                className="shrink-0 flex items-center justify-center h-10 md:h-12"
+                className="shrink-0 flex items-center justify-center w-28 md:w-36 h-10 md:h-12"
                 title={item.name}
               >
                 {item.logo && typeof item.logo === 'object' && (
                   <Media
                     resource={item.logo}
                     imgClassName={cn(
-                      'h-8 md:h-10 w-auto object-contain transition-all duration-300',
+                      'max-h-8 md:max-h-10 max-w-full w-auto object-contain transition-all duration-300',
                       isDark
                         ? 'brightness-0 invert opacity-30 hover:opacity-100 hover:invert-0 hover:brightness-100'
                         : 'grayscale opacity-40 hover:grayscale-0 hover:opacity-100',

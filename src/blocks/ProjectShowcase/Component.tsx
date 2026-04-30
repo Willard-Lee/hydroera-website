@@ -51,7 +51,7 @@ export const ProjectsShowcaseBlock: React.FC<
   if (projects.length === 0) return null
 
   return (
-    <div className="my-16" id={id ? `block-${id}` : undefined}>
+    <div id={id ? `block-${id}` : undefined}>
       <ProjectsShowcaseClient
         projects={projects}
         eyebrow={eyebrow}
